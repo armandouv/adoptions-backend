@@ -1,11 +1,11 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Pets-related routes.
  */
-@Controller
+@RestController
 public class PetsController
 {
 }

@@ -1,11 +1,11 @@
 package org.mascotadopta.adoptionsplatform.users;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Users-related routes.
  */
-@Controller
+@RestController
 public class UsersController
 {
 }

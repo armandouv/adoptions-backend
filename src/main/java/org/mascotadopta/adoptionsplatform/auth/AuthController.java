@@ -1,11 +1,11 @@
 package org.mascotadopta.adoptionsplatform.auth;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Authentication-related routes.
  */
-@Controller
+@RestController
 public class AuthController
 {
 }
