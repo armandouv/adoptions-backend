@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
  * Users' data retrieval functionality.
  */
 @Repository
-public interface UsersRepository extends CrudRepository<User, Integer>
+public interface UsersRepository extends CrudRepository<User, Long>
 {
 }

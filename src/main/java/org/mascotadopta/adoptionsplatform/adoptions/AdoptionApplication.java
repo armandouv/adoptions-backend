@@ -9,16 +9,9 @@ import javax.persistence.Id;
 @Entity
 public class AdoptionApplication
 {
+    /**
+     * Primary numerical key.
+     */
     @Id
-    private Integer id;
-    
-    public Integer getId()
-    {
-        return id;
-    }
-    
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+    private long id;
 }

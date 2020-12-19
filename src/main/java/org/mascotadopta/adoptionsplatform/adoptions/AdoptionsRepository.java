@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
  * Adoptions' data retrieval functionality.
  */
 @Repository
-public interface AdoptionsRepository extends CrudRepository<AdoptionApplication, Integer>
+public interface AdoptionsRepository extends CrudRepository<AdoptionApplication, Long>
 {
 }
