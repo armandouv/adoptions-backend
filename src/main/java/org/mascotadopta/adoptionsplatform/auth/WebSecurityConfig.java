@@ -1,24 +1,26 @@
 package org.mascotadopta.adoptionsplatform.auth;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
+    private final ApplicationUserDetailsService applicationUserDetailsService;
+    
+    public WebSecurityConfig(ApplicationUserDetailsService applicationUserDetailsService)
+    {
+        this.applicationUserDetailsService = applicationUserDetailsService;
+    }
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        super.configure(auth);
+        auth.userDetailsService(applicationUserDetailsService);
     }
     
     @Override
@@ -35,19 +37,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .and()
                 .logout()
                 .permitAll();
-    }
-    
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService()
-    {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-        
-        return new InMemoryUserDetailsManager(user);
     }
 }
