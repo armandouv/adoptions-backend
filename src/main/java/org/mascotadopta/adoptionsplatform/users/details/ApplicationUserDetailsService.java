@@ -1,4 +1,4 @@
-package org.mascotadopta.adoptionsplatform.auth;
+package org.mascotadopta.adoptionsplatform.users.details;
 
 import org.mascotadopta.adoptionsplatform.users.User;
 import org.mascotadopta.adoptionsplatform.users.UsersRepository;
@@ -24,6 +24,6 @@ public class ApplicationUserDetailsService implements UserDetailsService
     {
         Optional<User> user = this.usersRepository.findByEmail(email);
         if (user.isEmpty()) throw new UsernameNotFoundException("User does not exist");
-        return user.get();
+        return new ApplicationUserDetails(user.get());
     }
 }

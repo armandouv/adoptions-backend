@@ -2,11 +2,12 @@ package org.mascotadopta.adoptionsplatform.auth;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.mascotadopta.adoptionsplatform.users.User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * JSON Web Tokens related functionality.
@@ -16,20 +17,25 @@ public class JwtService
 {
     private final SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     
-    public String generateToken(User user, Date expiresAt)
+    private final long ACCESS_TOKEN_DURATION_MS = TimeUnit.MINUTES.toMillis(10);
+    
+    private final long REFRESH_TOKEN_DURATION_MS = TimeUnit.DAYS.toMillis(14);
+    
+    public String generateAccessToken(String email)
     {
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .setExpiration(expiresAt)
-                .signWith(SECRET)
-                .compact();
+        return generateToken(email, this::getAccessTokenExpirationDate);
     }
     
-    public String generateToken(String email, Date expiresAt)
+    public String generateRefreshToken(String email)
+    {
+        return generateToken(email, this::getRefreshTokenExpirationDate);
+    }
+    
+    private String generateToken(String email, Supplier<Date> expirationDateSupplier)
     {
         return Jwts.builder()
                 .setSubject(email)
-                .setExpiration(expiresAt)
+                .setExpiration(expirationDateSupplier.get())
                 .signWith(SECRET)
                 .compact();
     }
@@ -48,5 +54,20 @@ public class JwtService
         if (now.after(expirationDate)) throw new ExpiredJwtException(jws.getHeader(), claims, "Expired JWT");
         
         return claims;
+    }
+    
+    private Date getAccessTokenExpirationDate()
+    {
+        return getExpirationDate(ACCESS_TOKEN_DURATION_MS);
+    }
+    
+    private Date getRefreshTokenExpirationDate()
+    {
+        return getExpirationDate(REFRESH_TOKEN_DURATION_MS);
+    }
+    
+    private Date getExpirationDate(long millisecondsOffset)
+    {
+        return new Date(System.currentTimeMillis() + millisecondsOffset);
     }
 }

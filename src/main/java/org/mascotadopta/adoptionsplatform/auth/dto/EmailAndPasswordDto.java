@@ -1,4 +1,4 @@
-package org.mascotadopta.adoptionsplatform.auth;
+package org.mascotadopta.adoptionsplatform.auth.dto;
 
 public class EmailAndPasswordDto
 {

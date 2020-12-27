@@ -1,11 +1,13 @@
-package org.mascotadopta.adoptionsplatform.auth;
+package org.mascotadopta.adoptionsplatform.auth.filters;
 
 import com.google.common.base.Strings;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import org.mascotadopta.adoptionsplatform.auth.JwtService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -14,11 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtTokenVerifier extends OncePerRequestFilter
+@Component
+public class JwtTokenVerifierFilter extends OncePerRequestFilter
 {
     private final JwtService jwtService;
     
-    public JwtTokenVerifier(JwtService jwtService)
+    public JwtTokenVerifierFilter(JwtService jwtService)
     {
         this.jwtService = jwtService;
     }
@@ -33,7 +36,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter
             filterChain.doFilter(request, response);
             return;
         }
-        
+    
         try
         {
             Claims claims = jwtService.decodeToken(authorizationHeader.substring(7));
@@ -44,5 +47,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter
         {
             throw new IllegalStateException("Invalid token");
         }
+    
+        filterChain.doFilter(request, response);
     }
 }
