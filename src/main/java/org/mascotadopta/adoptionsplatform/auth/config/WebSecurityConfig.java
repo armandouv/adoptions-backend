@@ -1,8 +1,10 @@
 package org.mascotadopta.adoptionsplatform.auth.config;
 
+import org.mascotadopta.adoptionsplatform.auth.JwtService;
 import org.mascotadopta.adoptionsplatform.auth.filters.JwtTokenVerifierFilter;
 import org.mascotadopta.adoptionsplatform.auth.filters.JwtUsernamePasswordAuthenticationFilter;
 import org.mascotadopta.adoptionsplatform.users.details.ApplicationUserDetailsService;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,17 +21,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
     private final ApplicationUserDetailsService applicationUserDetailsService;
     
-    private final JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
-    
     private final JwtTokenVerifierFilter jwtTokenVerifierFilter;
     
+    private final JwtService jwtService;
+    
     public WebSecurityConfig(ApplicationUserDetailsService applicationUserDetailsService,
-                             JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter,
-                             JwtTokenVerifierFilter jwtTokenVerifierFilter)
+                             JwtTokenVerifierFilter jwtTokenVerifierFilter,
+                             JwtService jwtService)
     {
         this.applicationUserDetailsService = applicationUserDetailsService;
-        this.jwtUsernamePasswordAuthenticationFilter = jwtUsernamePasswordAuthenticationFilter;
         this.jwtTokenVerifierFilter = jwtTokenVerifierFilter;
+        this.jwtService = jwtService;
     }
     
     @Override
@@ -45,11 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(jwtUsernamePasswordAuthenticationFilter)
-                .addFilterAfter(jwtTokenVerifierFilter, JwtUsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtTokenVerifierFilter, LogoutFilter.class)
                 .authorizeRequests()
-                // .antMatchers().permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/adoptions/**").authenticated()
+                .anyRequest().permitAll();
     }
     
     @Bean
@@ -57,5 +59,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public AuthenticationManager authenticationManagerBean() throws Exception
     {
         return super.authenticationManagerBean();
+    }
+    
+    @Bean
+    public FilterRegistrationBean<JwtUsernamePasswordAuthenticationFilter> jwtUsernamePasswordAuthenticationFilter() throws
+            Exception
+    {
+        FilterRegistrationBean<JwtUsernamePasswordAuthenticationFilter> registrationBean
+                = new FilterRegistrationBean<>();
+        
+        registrationBean.setFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtService));
+        registrationBean.addUrlPatterns("/login");
+        
+        return registrationBean;
     }
 }
