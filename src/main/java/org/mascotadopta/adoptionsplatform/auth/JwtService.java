@@ -25,6 +25,15 @@ public class JwtService
                 .compact();
     }
     
+    public String generateToken(String email, Date expiresAt)
+    {
+        return Jwts.builder()
+                .setSubject(email)
+                .setExpiration(expiresAt)
+                .signWith(SECRET)
+                .compact();
+    }
+    
     public Claims decodeToken(String token)
     {
         Jws<Claims> jws = Jwts.parserBuilder()

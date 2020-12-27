@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -12,9 +13,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
     private final ApplicationUserDetailsService applicationUserDetailsService;
     
-    public WebSecurityConfig(ApplicationUserDetailsService applicationUserDetailsService)
+    private final JwtService jwtService;
+    
+    public WebSecurityConfig(ApplicationUserDetailsService applicationUserDetailsService,
+                             JwtService jwtService)
     {
         this.applicationUserDetailsService = applicationUserDetailsService;
+        this.jwtService = jwtService;
     }
     
     @Override
@@ -27,6 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtService))
+                .addFilterAfter(new JwtTokenVerifier(jwtService), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
