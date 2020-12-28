@@ -17,9 +17,9 @@ public class JwtService
 {
     private final SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     
-    private final long ACCESS_TOKEN_DURATION_MS = TimeUnit.MINUTES.toMillis(10);
+    public final long ACCESS_TOKEN_DURATION_MS = TimeUnit.MINUTES.toMillis(10);
     
-    private final long REFRESH_TOKEN_DURATION_MS = TimeUnit.DAYS.toMillis(14);
+    public final long REFRESH_TOKEN_DURATION_MS = TimeUnit.DAYS.toMillis(14);
     
     public String generateAccessToken(String email)
     {

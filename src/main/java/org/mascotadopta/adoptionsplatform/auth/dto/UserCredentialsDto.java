@@ -1,6 +1,6 @@
 package org.mascotadopta.adoptionsplatform.auth.dto;
 
-public class EmailAndPasswordDto
+public class UserCredentialsDto
 {
     private String email;
     

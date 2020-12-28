@@ -2,8 +2,9 @@ package org.mascotadopta.adoptionsplatform.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mascotadopta.adoptionsplatform.auth.JwtService;
-import org.mascotadopta.adoptionsplatform.auth.dto.EmailAndPasswordDto;
+import org.mascotadopta.adoptionsplatform.auth.dto.UserCredentialsDto;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter
 {
@@ -34,11 +36,11 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     {
         try
         {
-            EmailAndPasswordDto emailAndPasswordDto = new ObjectMapper()
-                    .readValue(request.getInputStream(), EmailAndPasswordDto.class);
-            
-            Authentication authentication = new UsernamePasswordAuthenticationToken(emailAndPasswordDto.getEmail(),
-                    emailAndPasswordDto.getPassword());
+            UserCredentialsDto userCredentialsDto = new ObjectMapper()
+                    .readValue(request.getInputStream(), UserCredentialsDto.class);
+    
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userCredentialsDto.getEmail(),
+                    userCredentialsDto.getPassword());
             return getAuthenticationManager().authenticate(authentication);
         }
         catch (IOException e)
@@ -52,6 +54,14 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                                             Authentication authResult) throws IOException, ServletException
     {
         response.setHeader("Authorization", "Bearer " + jwtService.generateAccessToken(authResult.getName()));
-        response.addCookie(new Cookie("refresh_token", jwtService.generateRefreshToken(authResult.getName())));
+    
+        Cookie refreshTokenCookie = new Cookie("refresh_token", jwtService.generateRefreshToken(authResult.getName()));
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setMaxAge(
+                Math.toIntExact(TimeUnit.MILLISECONDS.toSeconds(jwtService.REFRESH_TOKEN_DURATION_MS)));
+        refreshTokenCookie.setPath("/auth");
+    
+        response.setHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString() + "; SameSite=strict");
     }
 }
