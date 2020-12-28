@@ -1,6 +1,7 @@
 package org.mascotadopta.adoptionsplatform.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mascotadopta.adoptionsplatform.auth.AuthConstants;
 import org.mascotadopta.adoptionsplatform.auth.JwtService;
 import org.mascotadopta.adoptionsplatform.auth.dto.UserCredentialsDto;
 import org.springframework.context.annotation.Lazy;
@@ -53,15 +54,17 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException
     {
-        response.setHeader("Authorization", "Bearer " + jwtService.generateAccessToken(authResult.getName()));
+        response.setHeader(HttpHeaders.AUTHORIZATION,
+                AuthConstants.TOKEN_PREFIX + jwtService.generateAccessToken(authResult.getName()));
     
-        Cookie refreshTokenCookie = new Cookie("refresh_token", jwtService.generateRefreshToken(authResult.getName()));
+        Cookie refreshTokenCookie = new Cookie(AuthConstants.REFRESH_TOKEN_COOKIE_NAME,
+                jwtService.generateRefreshToken(authResult.getName()));
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setMaxAge(
-                Math.toIntExact(TimeUnit.MILLISECONDS.toSeconds(jwtService.REFRESH_TOKEN_DURATION_MS)));
+                Math.toIntExact(TimeUnit.MILLISECONDS.toSeconds(AuthConstants.REFRESH_TOKEN_DURATION_MS)));
         refreshTokenCookie.setPath("/auth");
     
-        response.setHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString() + "; SameSite=strict");
+        response.setHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString() + AuthConstants.SAME_SITE);
     }
 }

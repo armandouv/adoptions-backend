@@ -1,12 +1,14 @@
 package org.mascotadopta.adoptionsplatform.auth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -16,10 +18,6 @@ import java.util.function.Supplier;
 public class JwtService
 {
     private final SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    
-    public final long ACCESS_TOKEN_DURATION_MS = TimeUnit.MINUTES.toMillis(10);
-    
-    public final long REFRESH_TOKEN_DURATION_MS = TimeUnit.DAYS.toMillis(14);
     
     public String generateAccessToken(String email)
     {
@@ -31,7 +29,7 @@ public class JwtService
         return generateToken(email, this::getRefreshTokenExpirationDate);
     }
     
-    private String generateToken(String email, Supplier<Date> expirationDateSupplier)
+    private String generateToken(String email, Supplier<Date> expirationDateSupplier) throws JwtException
     {
         return Jwts.builder()
                 .setSubject(email)
@@ -40,30 +38,23 @@ public class JwtService
                 .compact();
     }
     
-    public Claims decodeToken(String token)
+    public Claims decodeToken(String token) throws JwtException
     {
-        Jws<Claims> jws = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(SECRET)
                 .build()
-                .parseClaimsJws(token);
-        
-        Claims claims = jws.getBody();
-        Date expirationDate = claims.getExpiration();
-        Date now = new Date();
-        
-        if (now.after(expirationDate)) throw new ExpiredJwtException(jws.getHeader(), claims, "Expired JWT");
-        
-        return claims;
+                .parseClaimsJws(token)
+                .getBody();
     }
     
     private Date getAccessTokenExpirationDate()
     {
-        return getExpirationDate(ACCESS_TOKEN_DURATION_MS);
+        return getExpirationDate(AuthConstants.ACCESS_TOKEN_DURATION_MS);
     }
     
     private Date getRefreshTokenExpirationDate()
     {
-        return getExpirationDate(REFRESH_TOKEN_DURATION_MS);
+        return getExpirationDate(AuthConstants.REFRESH_TOKEN_DURATION_MS);
     }
     
     private Date getExpirationDate(long millisecondsOffset)
