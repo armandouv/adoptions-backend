@@ -6,14 +6,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * Custom User Details.
+ */
 public class ApplicationUserDetails implements UserDetails
 {
+    /**
+     * User's email.
+     */
     private final String email;
     
+    /**
+     * User's password.
+     */
     private final String password;
     
+    /**
+     * Whether the email of this <code>User</code> has already been confirmed or not.
+     */
     private final boolean isEmailConfirmed;
     
+    /**
+     * Single constructor. Initializes relevant information given a User.
+     *
+     * @param user User to represent.
+     */
     public ApplicationUserDetails(User user)
     {
         this.email = user.getEmail();
