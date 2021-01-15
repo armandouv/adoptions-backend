@@ -3,6 +3,7 @@ package org.mascotadopta.adoptionsplatform.pets;
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionsplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +12,8 @@ import java.util.List;
 /**
  * A pet for adoption.
  */
-@Entity
+@Entity(name = "Pet")
+@EntityListeners(AuditingEntityListener.class)
 public class Pet
 {
     /**

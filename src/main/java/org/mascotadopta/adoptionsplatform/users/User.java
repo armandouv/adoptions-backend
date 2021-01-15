@@ -1,17 +1,16 @@
 package org.mascotadopta.adoptionsplatform.users;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * A registered user.
  */
-@Entity
+@Entity(name = "UserEntity")
+@EntityListeners(AuditingEntityListener.class)
 public class User
 {
     /**
@@ -23,8 +22,8 @@ public class User
      * Primary numerical key.
      */
     @Id
-    @GeneratedValue()
-    private long id;
+    @GeneratedValue
+    private Long id;
     
     /**
      * Date of User creation.
@@ -57,7 +56,7 @@ public class User
      * Constructs a <code>User</code> with the information provided.
      *
      * @param email     The email that this <code>User</code> will get assigned to.
-     * @param password  The password of this <code>User</code>.
+     * @param password  The hashed password of this <code>User</code>.
      * @param firstName The name of this <code>User</code>.
      * @param lastName  The last name of this <code>User</code>.
      */

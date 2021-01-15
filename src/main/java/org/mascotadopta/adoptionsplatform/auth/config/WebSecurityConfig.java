@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /**
@@ -110,10 +112,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         FilterRegistrationBean<JwtUsernamePasswordAuthenticationFilter> registrationBean
                 = new FilterRegistrationBean<>();
-        
+    
         registrationBean.setFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtService));
         registrationBean.addUrlPatterns("/login");
-        
+    
         return registrationBean;
+    }
+    
+    /**
+     * Declares a PasswordEncoder Bean.
+     *
+     * @return A <code>DelegatingPasswordEncoder</code>.
+     */
+    @Bean
+    public PasswordEncoder getPasswordEncoder()
+    {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

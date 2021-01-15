@@ -3,17 +3,16 @@ package org.mascotadopta.adoptionsplatform.adoptions;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
 import org.mascotadopta.adoptionsplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * An adoption request.
  */
-@Entity
+@Entity(name = "AdoptionApplication")
+@EntityListeners(AuditingEntityListener.class)
 public class AdoptionApplication
 {
     /**
