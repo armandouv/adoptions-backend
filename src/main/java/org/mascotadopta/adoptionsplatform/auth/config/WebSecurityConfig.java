@@ -22,12 +22,28 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
+    /**
+     * Custom User details service.
+     */
     private final ApplicationUserDetailsService applicationUserDetailsService;
     
+    /**
+     * JWT authentication filter.
+     */
     private final JwtTokenVerifierFilter jwtTokenVerifierFilter;
     
+    /**
+     * JWT utilities service.
+     */
     private final JwtService jwtService;
     
+    /**
+     * Single constructor.
+     *
+     * @param applicationUserDetailsService Custom User details service.
+     * @param jwtTokenVerifierFilter        JWT authentication filter.
+     * @param jwtService                    JWT utilities service.
+     */
     public WebSecurityConfig(ApplicationUserDetailsService applicationUserDetailsService,
                              JwtTokenVerifierFilter jwtTokenVerifierFilter,
                              JwtService jwtService)
@@ -37,12 +53,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         this.jwtService = jwtService;
     }
     
+    /**
+     * Authentication configuration. Sets a custom UserDetailsService.
+     *
+     * @param auth Authentication manager builder.
+     * @throws Exception If an error occurs when adding the UserDetailsService based authentication.
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
         auth.userDetailsService(applicationUserDetailsService);
     }
     
+    /**
+     * Authorization configuration.
+     *
+     * @param http Http security.
+     * @throws Exception If an error occurs when setting up a security configuration.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -57,6 +85,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .anyRequest().permitAll();
     }
     
+    /**
+     * Exposes the <code>AuthenticationManager</code> as a Bean.
+     *
+     * @return The <code>AuthenticationManager</code>.
+     * @throws Exception If an error occurs while getting the <code>AuthenticationManager</code>.
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception
@@ -64,6 +98,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         return super.authenticationManagerBean();
     }
     
+    /**
+     * Registers the <code>JwtUsernameAndPasswordAuthenticationFilter</code> in the /login route.
+     *
+     * @return The <code>FilterRegistrationBean</code> for JwtUsernameAndPasswordAuthenticationFilter.
+     * @throws Exception If the AuthenticationManager couldn't be acquired.
+     */
     @Bean
     public FilterRegistrationBean<JwtUsernamePasswordAuthenticationFilter> jwtUsernamePasswordAuthenticationFilter() throws
             Exception
