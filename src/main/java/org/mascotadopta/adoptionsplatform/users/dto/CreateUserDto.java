@@ -1,5 +1,7 @@
 package org.mascotadopta.adoptionsplatform.users.dto;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Necessary data to create a <code>User</code>.
  */
@@ -8,22 +10,26 @@ public class CreateUserDto
     /**
      * Email to register the User with.
      */
+    @NotBlank
     private final String email;
     
     /**
      * Secure password to use. It must contain at least 12 characters, an uppercase letter, a lowercase letter, a symbol
      * and a number.
      */
+    @NotBlank
     private final String password;
     
     /**
      * The first name of the <code>User</code> to register.
      */
+    @NotBlank
     private final String firstName;
     
     /**
      * The last name of the <code>User</code> to register.
      */
+    @NotBlank
     private final String lastName;
     
     /**
