@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * Users-related routes.
  */
@@ -34,7 +36,7 @@ public class UsersController
      * @param createUserDto Data of the User to create.
      */
     @PostMapping
-    public void signUp(@RequestBody CreateUserDto createUserDto)
+    public void signUp(@Valid @RequestBody CreateUserDto createUserDto)
     {
         this.usersService.createUser(createUserDto);
     }

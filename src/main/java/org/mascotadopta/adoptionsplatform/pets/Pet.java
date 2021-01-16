@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,19 +21,22 @@ public class Pet
      * Primary numerical key.
      */
     @Id
-    @GeneratedValue()
+    @GeneratedValue
+    @NotNull
     private long id;
     
     /**
      * Date of User creation.
      */
     @CreatedDate
+    @NotNull
     private LocalDateTime createdDate;
     
     /**
      * User that posted this Pet for adoption.
      */
     @ManyToOne
+    @NotNull
     private User postedBy;
     
     /**
@@ -44,21 +48,25 @@ public class Pet
     /**
      * Animal type of this Pet, e.g. a dog, cat, etc.
      */
+    @NotNull
     private String type;
     
     /**
      * Whether this Pet posting is still available for adoption.
      */
+    @NotNull
     private boolean isActive;
     
     /**
      * The name of this Pet.
      */
+    @NotNull
     private String name;
     
     /**
      * Relevant information about this Pet.
      */
+    @NotNull
     private String description;
     
     /**
@@ -70,5 +78,6 @@ public class Pet
     /**
      * The zip code of the place where this Pet is being posted or offered.
      */
+    @NotNull
     private int zipCode;
 }

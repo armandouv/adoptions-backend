@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -26,38 +27,44 @@ public class AdoptionApplication
     private final boolean isDataVisible = false;
     
     /**
+     * Whether this application has already been rejected.
+     */
+    @NotNull
+    private final boolean hasBeenRejected = false;
+    
+    /**
      * Primary numerical key.
      */
     @Id
-    @GeneratedValue()
+    @GeneratedValue
+    @NotNull
     private long id;
     
     /**
      * Date of User creation.
      */
     @CreatedDate
+    @NotNull
     private LocalDateTime createdDate;
     
     /**
      * User who applied for a Pet's adoption.
      */
     @OneToOne
+    @NotNull
     private User by;
     
     /**
      * Pet for which this application is.
      */
     @OneToOne
+    @NotNull
     private Pet pet;
-    
-    /**
-     * Whether this application has already been rejected.
-     */
-    private boolean hasBeenRejected;
     
     /**
      * Responses to the questionnaire required in the application process.
      */
     @OneToOne
+    @NotNull
     private QuestionnaireResponses questionnaireResponses;
 }

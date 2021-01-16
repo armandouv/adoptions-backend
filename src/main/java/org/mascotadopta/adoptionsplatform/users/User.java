@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -23,33 +24,39 @@ public class User
      */
     @Id
     @GeneratedValue
+    @NotNull
     private Long id;
     
     /**
      * Date of User creation.
      */
     @CreatedDate
+    @NotNull
     private LocalDateTime createdDate;
     
     /**
      * Registered user email.
      */
     @Column(unique = true)
+    @NotNull
     private String email;
     
     /**
      * Password hash.
      */
+    @NotNull
     private String password;
     
     /**
      * This User's first name.
      */
+    @NotNull
     private String firstName;
     
     /**
      * This User's last name.
      */
+    @NotNull
     private String lastName;
     
     /**

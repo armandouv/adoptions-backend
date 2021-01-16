@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * Responses to the questionnaire required in the adoption application process.
@@ -18,6 +19,7 @@ public class QuestionnaireResponses
      * Primary numerical key.
      */
     @Id
-    @GeneratedValue()
+    @GeneratedValue
+    @NotNull
     private long id;
 }
