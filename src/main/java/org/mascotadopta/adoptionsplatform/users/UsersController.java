@@ -11,7 +11,7 @@ import javax.validation.Valid;
 /**
  * Users-related routes.
  */
-@RequestMapping("/users")
+@RequestMapping("users")
 @RestController
 public class UsersController
 {
