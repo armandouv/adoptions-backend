@@ -61,14 +61,17 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         {
             UserCredentialsDto userCredentialsDto = new ObjectMapper()
                     .readValue(request.getInputStream(), UserCredentialsDto.class);
-            
+    
             Authentication authentication = new UsernamePasswordAuthenticationToken(userCredentialsDto.getEmail(),
                     userCredentialsDto.getPassword());
-            return getAuthenticationManager().authenticate(authentication);
+            authentication = getAuthenticationManager().authenticate(authentication);
+            return authentication;
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Invalid authentication request");
+            throw new AuthenticationException("Invalid authentication request")
+            {
+            };
         }
     }
     
@@ -90,12 +93,11 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         
         Cookie refreshTokenCookie = new Cookie(AuthConstants.REFRESH_TOKEN_COOKIE_NAME,
                 jwtService.generateRefreshToken(authResult.getName()));
-        refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setMaxAge(
                 Math.toIntExact(TimeUnit.MILLISECONDS.toSeconds(AuthConstants.REFRESH_TOKEN_DURATION_MS)));
+        refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/auth");
-        
-        response.setHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString() + AuthConstants.SAME_SITE);
+        response.addCookie(refreshTokenCookie);
     }
 }
