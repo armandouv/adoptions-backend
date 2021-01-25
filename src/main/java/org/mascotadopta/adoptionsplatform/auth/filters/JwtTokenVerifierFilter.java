@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.mascotadopta.adoptionsplatform.auth.AuthConstants;
 import org.mascotadopta.adoptionsplatform.auth.JwtService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,7 +72,8 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter
         }
         catch (JwtException e)
         {
-            throw new IllegalStateException("Invalid token");
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
+            return;
         }
         
         filterChain.doFilter(request, response);

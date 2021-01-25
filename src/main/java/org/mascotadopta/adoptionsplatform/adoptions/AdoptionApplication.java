@@ -17,20 +17,9 @@ import java.time.LocalDateTime;
 public class AdoptionApplication
 {
     /**
-     * Whether the applicant has permission to see the poster's data.
-     * <p>
-     * Initially, the applicant doesn't have access to the data, however, if the application is accepted by the poster,
-     * the value of this property will change to true. On the other hand, if the application is rejected, this property
-     * will always remain with its initial value (false). In other words, once the value of hasBeenRejected changes to
-     * true, mutating isDataVisible (to true) becomes an invalid operation.
+     * The status of this application.
      */
-    private final boolean isDataVisible = false;
-    
-    /**
-     * Whether this application has already been rejected.
-     */
-    @NotNull
-    private final boolean hasBeenRejected = false;
+    private final AdoptionApplicationStatus status = AdoptionApplicationStatus.IN_PROGRESS;
     
     /**
      * Primary numerical key.
@@ -41,7 +30,7 @@ public class AdoptionApplication
     private long id;
     
     /**
-     * Date of User creation.
+     * Date of application creation.
      */
     @CreatedDate
     @NotNull
@@ -50,9 +39,9 @@ public class AdoptionApplication
     /**
      * User who applied for a Pet's adoption.
      */
-    @OneToOne
+    @ManyToOne
     @NotNull
-    private User by;
+    private User user;
     
     /**
      * Pet for which this application is.
@@ -67,4 +56,36 @@ public class AdoptionApplication
     @OneToOne
     @NotNull
     private QuestionnaireResponses questionnaireResponses;
+    
+    /**
+     * @return The current status of this application.
+     */
+    public AdoptionApplicationStatus getStatus()
+    {
+        return status;
+    }
+    
+    /**
+     * @return The id of this application.
+     */
+    public long getId()
+    {
+        return id;
+    }
+    
+    /**
+     * @return The timestamp when this application was created.
+     */
+    public LocalDateTime getCreatedDate()
+    {
+        return createdDate;
+    }
+    
+    /**
+     * @return The pet for which this application is.
+     */
+    public Pet getPet()
+    {
+        return pet;
+    }
 }

@@ -26,7 +26,7 @@ public class Pet
     private long id;
     
     /**
-     * Date of User creation.
+     * Date of Pet creation.
      */
     @CreatedDate
     @NotNull
