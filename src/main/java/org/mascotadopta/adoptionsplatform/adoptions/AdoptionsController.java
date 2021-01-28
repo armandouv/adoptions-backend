@@ -1,6 +1,6 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
-import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationDto;
+import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,18 +32,20 @@ public class AdoptionsController
     }
     
     /**
-     * Retrieves the requested page of a User's adoption applications.
+     * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
+     * (<code>AdoptionApplicationInfoDto</code>).
      *
-     * @param email Email of the currently authenticated User.
-     * @param page  Page number to retrieve.
+     * @param email      Email of the currently authenticated User.
+     * @param pageNumber Page number to retrieve.
      * @return The requested <code>Page</code> of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
     @RequestMapping("my_applications")
     @GetMapping
-    public Page<AdoptionApplicationDto> getApplications(@AuthenticationPrincipal String email,
-                                                        @RequestParam("page") int page) throws ResponseStatusException
+    public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal String email,
+                                                                @RequestParam("page") int pageNumber) throws
+            ResponseStatusException
     {
-        return this.adoptionsService.getApplications(email, page);
+        return this.adoptionsService.getUserApplications(email, pageNumber);
     }
 }

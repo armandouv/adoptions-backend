@@ -1,6 +1,6 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
-import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationDto;
+import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -34,14 +34,16 @@ public class AdoptionsService
     }
     
     /**
-     * Retrieves the requested page of a User's adoption applications.
+     * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
+     * (<code>AdoptionApplicationInfoDto</code>).
      *
      * @param email      The email of the User to retrieve the applications from.
      * @param pageNumber The requested page number.
      * @return The requested page of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    public Page<AdoptionApplicationDto> getApplications(String email, int pageNumber) throws ResponseStatusException
+    public Page<AdoptionApplicationInfoDto> getUserApplications(String email, int pageNumber) throws
+            ResponseStatusException
     {
         Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
                 .findAllByUserEmail(email, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
@@ -49,6 +51,6 @@ public class AdoptionsService
         if (adoptionApplications.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
         
-        return adoptionApplications.map(AdoptionApplicationDto::new);
+        return adoptionApplications.map(AdoptionApplicationInfoDto::new);
     }
 }

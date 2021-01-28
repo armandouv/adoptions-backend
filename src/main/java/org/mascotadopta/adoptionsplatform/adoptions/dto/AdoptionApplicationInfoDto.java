@@ -6,7 +6,10 @@ import org.mascotadopta.adoptionsplatform.pets.Pet;
 
 import java.time.LocalDateTime;
 
-public class AdoptionApplicationDto
+/**
+ * Data Transfer Object that contains a limited view of an AdoptionApplication.
+ */
+public class AdoptionApplicationInfoDto
 {
     /**
      * The status of this application.
@@ -33,7 +36,7 @@ public class AdoptionApplicationDto
      *
      * @param adoptionApplication <code>AdoptionApplication</code> to build this DTO from.
      */
-    public AdoptionApplicationDto(AdoptionApplication adoptionApplication)
+    public AdoptionApplicationInfoDto(AdoptionApplication adoptionApplication)
     {
         this.status = adoptionApplication.getStatus();
         this.id = adoptionApplication.getId();

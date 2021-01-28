@@ -33,7 +33,7 @@ public class Pet
     private LocalDateTime createdDate;
     
     /**
-     * User that posted this Pet for adoption.
+     * User who posted this Pet for adoption.
      */
     @ManyToOne
     @NotNull
@@ -52,7 +52,7 @@ public class Pet
     private String type;
     
     /**
-     * Whether this Pet posting is still available for adoption.
+     * Whether this Pet posting is still available for adoption or not.
      */
     @NotNull
     private boolean isActive;
@@ -80,4 +80,60 @@ public class Pet
      */
     @NotNull
     private int zipCode;
+    
+    /**
+     * @return The id of this Pet.
+     */
+    public long getId()
+    {
+        return id;
+    }
+    
+    /**
+     * @return The timestamp when this Pet was posted for adoption.
+     */
+    public LocalDateTime getCreatedDate()
+    {
+        return createdDate;
+    }
+    
+    /**
+     * @return The type of this Pet, e.g. a dog, cat, etc.
+     */
+    public String getType()
+    {
+        return type;
+    }
+    
+    /**
+     * @return Whether this Pet posting is still available for adoption or not.
+     */
+    public boolean isActive()
+    {
+        return isActive;
+    }
+    
+    /**
+     * @return The name of this Pet
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    /**
+     * @return Relevant information about this Pet.
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+    
+    /**
+     * @return The zip code of the place where this Pet is being posted or offered.
+     */
+    public int getZipCode()
+    {
+        return zipCode;
+    }
 }
