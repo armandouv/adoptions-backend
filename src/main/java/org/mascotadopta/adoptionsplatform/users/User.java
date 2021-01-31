@@ -94,6 +94,22 @@ public class User
     }
     
     /**
+     * @param firstName The new firstName of this User.
+     */
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+    
+    /**
+     * @param lastName The new lastName of this User.
+     */
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+    
+    /**
      * Checks if this User's email is already confirmed. If it isn't, this account is inactive and should not be allowed
      * to sign in.
      *
