@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionsplatform.users;
 
 import org.mascotadopta.adoptionsplatform.users.dto.CreateUserDto;
 import org.mascotadopta.adoptionsplatform.users.dto.UpdateNameDto;
+import org.mascotadopta.adoptionsplatform.users.settings.dto.UpdateSettingsDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -45,12 +46,26 @@ public class UsersController
     /**
      * Updates the name of a User.
      *
-     * @param email         Email of the currently authenticated User.
+     * @param email         Email address of the currently authenticated User.
      * @param updateNameDto The new name.
      */
     @PutMapping
     public void updateName(@AuthenticationPrincipal String email, @Valid @RequestBody UpdateNameDto updateNameDto)
     {
         this.usersService.updateName(email, updateNameDto);
+    }
+    
+    /**
+     * Updates the settings of a User.
+     *
+     * @param email             Email address of the currently authenticated User.
+     * @param updateSettingsDto New settings.
+     */
+    @RequestMapping("settings")
+    @PutMapping
+    public void updateSettings(@AuthenticationPrincipal String email,
+                               @Valid @RequestBody UpdateSettingsDto updateSettingsDto)
+    {
+        this.usersService.updateSettings(email, updateSettingsDto);
     }
 }

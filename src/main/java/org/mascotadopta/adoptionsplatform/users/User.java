@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.users;
 
+import org.mascotadopta.adoptionsplatform.users.settings.UserSettings;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +15,12 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class User
 {
+    /**
+     * Settings associated with this User.
+     */
+    @OneToOne
+    private UserSettings settings;
+    
     /**
      * Represents whether a User has already confirmed their email or not.
      */
@@ -102,11 +109,29 @@ public class User
     }
     
     /**
+     * @return Settings associated with this User.
+     */
+    public UserSettings getSettings()
+    {
+        return settings;
+    }
+    
+    /**
      * @param lastName The new lastName of this User.
      */
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+    
+    /**
+     * Sets this User's settings.
+     *
+     * @param settings Settings of this User.
+     */
+    public void setSettings(UserSettings settings)
+    {
+        this.settings = settings;
     }
     
     /**
@@ -129,7 +154,7 @@ public class User
     }
     
     /**
-     * Get the email assigned to this <code>User</code>.
+     * Gets the email assigned to this <code>User</code>.
      *
      * @return The email associated with this <code>User</code>.
      */
@@ -139,7 +164,7 @@ public class User
     }
     
     /**
-     * Get the hashed password of this <code>User</code>.
+     * Gets the hashed password of this <code>User</code>.
      *
      * @return The hashed password of this User.
      */
