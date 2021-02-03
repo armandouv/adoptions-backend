@@ -1,11 +1,14 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
+import org.mascotadopta.adoptionsplatform.pets.dto.PetDto;
 import org.mascotadopta.adoptionsplatform.pets.dto.PetInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 /**
  * Pets-related business logic.
@@ -63,11 +66,39 @@ public class PetsService
     {
         Page<Pet> pets = this.petsRepository
                 .findAllByPostedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
-        
+    
         if (pets.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
-        
+    
         return pets.map(PetInfoDto::new);
+    }
+    
+    /**
+     * Retrieves a Pet given its primary numerical key.
+     *
+     * @param id ID of the Pet to retrieve.
+     * @return The requested Pet.
+     */
+    public PetDto getPetById(long id)
+    {
+        Optional<Pet> pet = this.petsRepository.findById(id);
+        
+        if (pet.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested Pet does not exist");
+        
+        return petToPetDto(pet.get());
+    }
+    
+    /**
+     * Maps a <code>Pet</code> to a PetDto, obtaining necessary data.
+     *
+     * @param pet Pet to map.
+     * @return A <code>PetDto</code> containing all related information to the given Pet.
+     */
+    private PetDto petToPetDto(Pet pet)
+    {
+        long numberOfApplications = this.petsRepository.countApplicationsById(pet.getId());
+        return new PetDto(pet, numberOfApplications);
     }
     
 }

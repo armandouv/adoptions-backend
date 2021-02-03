@@ -16,4 +16,6 @@ public interface PetsRepository extends CrudRepository<Pet, Long>
     Page<Pet> findAllByPostedByEmail(@NotNull String userEmail, Pageable pageable);
     
     Page<Pet> findAll(Pageable page);
+    
+    long countApplicationsById(long petId);
 }

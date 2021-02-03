@@ -1,12 +1,10 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
+import org.mascotadopta.adoptionsplatform.pets.dto.PetDto;
 import org.mascotadopta.adoptionsplatform.pets.dto.PetInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
@@ -59,5 +57,18 @@ public class PetsController
                                          @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
         return this.petsService.getUserPosts(email, pageNumber);
+    }
+    
+    /**
+     * Retrieves a Pet given its primary numerical key.
+     *
+     * @param id ID of the Pet to retrieve.
+     * @return The requested Pet.
+     */
+    @RequestMapping("{id}")
+    @GetMapping
+    public PetDto getPetById(@PathVariable long id)
+    {
+        return this.petsService.getPetById(id);
     }
 }
