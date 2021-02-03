@@ -32,6 +32,19 @@ public class PetsController
     }
     
     /**
+     * Retrieves the requested page of Pet information.
+     *
+     * @param pageNumber Page number to retrieve.
+     * @return The requested Pet information <code>Page</code>.
+     * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
+     */
+    @GetMapping
+    public Page<PetInfoDto> getPetsPage(@RequestParam("page") int pageNumber) throws ResponseStatusException
+    {
+        return this.petsService.getPetsPage(pageNumber);
+    }
+    
+    /**
      * Retrieves the requested page of a User's pet posts. Only a limited view of the data is returned
      * (<code>PetInfoDto</code>).
      *
