@@ -64,12 +64,26 @@ public class PetsController
      *
      * @param id ID of the Pet to retrieve.
      * @return The requested Pet.
+     * @throws ResponseStatusException If the requested Pet does not exist (404 Not Found).
      */
-    @RequestMapping("{id}")
-    @GetMapping
-    public PetDto getPetById(@PathVariable long id)
+    @GetMapping("{id}")
+    public PetDto getPetById(@PathVariable long id) throws ResponseStatusException
     {
         return this.petsService.getPetById(id);
+    }
+    
+    /**
+     * Deletes a Pet given its primary numerical key. The Pet must've been posted by the currently authenticated User.
+     *
+     * @param id ID of the Pet to delete.
+     * @throws ResponseStatusException If the Pet to delete does not exist (404 Not Found) or it wasn't posted by the
+     *                                 currently authenticated User (403 Forbidden).
+     */
+    @DeleteMapping("{id}")
+    public void deletePetById(@AuthenticationPrincipal String email, @PathVariable long id) throws
+            ResponseStatusException
+    {
+        this.petsService.deletePetById(email, id);
     }
     
     /**

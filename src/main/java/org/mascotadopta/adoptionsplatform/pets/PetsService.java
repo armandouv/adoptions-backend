@@ -78,15 +78,37 @@ public class PetsService
      *
      * @param id ID of the Pet to retrieve.
      * @return The requested Pet.
+     * @throws ResponseStatusException If the requested Pet does not exist (404 Not Found).
      */
-    public PetDto getPetById(long id)
+    public PetDto getPetById(long id) throws ResponseStatusException
     {
         Optional<Pet> pet = this.petsRepository.findById(id);
-    
+        
         if (pet.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested Pet does not exist");
-    
+        
         return petToPetDto(pet.get());
+    }
+    
+    /**
+     * Deletes a Pet given its primary numerical key. The Pet must have been posted by the specified User.
+     *
+     * @param email Email of the poster.
+     * @param id    ID of the Pet to delete.
+     * @throws ResponseStatusException If the Pet to delete does not exist (404 Not Found) or it wasn't posted by the
+     *                                 specified User (403 Forbidden).
+     */
+    public void deletePetById(String email, long id) throws ResponseStatusException
+    {
+        Optional<Pet> petOptional = this.petsRepository.findById(id);
+        
+        if (petOptional.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        
+        Pet pet = petOptional.get();
+        if (!pet.getPostedBy().getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        
+        this.petsRepository.delete(pet);
     }
     
     /**

@@ -33,6 +33,14 @@ public class Pet
     private LocalDateTime createdDate;
     
     /**
+     * @return User who posted this Pet for adoption.
+     */
+    public User getPostedBy()
+    {
+        return postedBy;
+    }
+    
+    /**
      * User who posted this Pet for adoption.
      */
     @ManyToOne
