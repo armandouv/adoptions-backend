@@ -62,7 +62,7 @@ public class PetsService
      * @return The requested page of the User's pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    public Page<PetInfoDto> getUserPosts(String email, int pageNumber) throws ResponseStatusException
+    public Page<PetInfoDto> getUserPets(String email, int pageNumber) throws ResponseStatusException
     {
         Page<Pet> pets = this.petsRepository
                 .findAllByPostedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
@@ -82,11 +82,31 @@ public class PetsService
     public PetDto getPetById(long id)
     {
         Optional<Pet> pet = this.petsRepository.findById(id);
-        
+    
         if (pet.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested Pet does not exist");
-        
+    
         return petToPetDto(pet.get());
+    }
+    
+    /**
+     * Retrieves the requested page of a User's saved pet posts. Only a limited view of the data is returned
+     * (<code>PetInfoDto</code>).
+     *
+     * @param email      Email of the User to retrieve the saved pet posts from.
+     * @param pageNumber Page number to retrieve.
+     * @return The requested Page of the User's saved pet posts.
+     * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
+     */
+    public Page<PetInfoDto> getSavedPets(String email, int pageNumber) throws ResponseStatusException
+    {
+        Page<Pet> pets = this.petsRepository
+                .findAllBySavedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
+        
+        if (pets.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
+        
+        return pets.map(PetInfoDto::new);
     }
     
     /**

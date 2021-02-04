@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .and()
                 .addFilterAfter(jwtTokenVerifierFilter, LogoutFilter.class)
                 .authorizeRequests()
-                .antMatchers("/adoptions/**", "/pets/my_posts").authenticated()
+                .antMatchers("/adoptions/**", "/pets/my_posts", "/pets/saved").authenticated()
                 .antMatchers(HttpMethod.PUT, "/users/**").authenticated()
                 .anyRequest().permitAll();
     }
