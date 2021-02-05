@@ -133,4 +133,17 @@ public class PetsController
     {
         this.petsService.editPet(email, postPetDto, id);
     }
+    
+    /**
+     * Toggles the saved state in a Pet post.
+     *
+     * @param email Email of the currently authenticated User.
+     * @param id    Pet ID.
+     * @return The new saved state of the specified Pet.
+     */
+    @PatchMapping("{id}")
+    public boolean togglePetSavedState(@AuthenticationPrincipal String email, @PathVariable long id)
+    {
+        return this.petsService.togglePetSavedState(email, id);
+    }
 }

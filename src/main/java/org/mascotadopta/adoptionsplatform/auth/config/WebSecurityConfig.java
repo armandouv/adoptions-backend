@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/adoptions/**", "/pets/my_posts", "/pets/saved").authenticated()
                 .antMatchers(HttpMethod.PUT, "/users/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/pets/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/pets/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/pets/**").authenticated()
                 .anyRequest().permitAll();
     }
     

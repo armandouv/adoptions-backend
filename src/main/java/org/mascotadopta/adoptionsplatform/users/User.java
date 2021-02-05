@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.users;
 
+import org.mascotadopta.adoptionsplatform.pets.Pet;
 import org.mascotadopta.adoptionsplatform.users.settings.UserSettings;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -7,6 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A registered user.
@@ -65,6 +68,20 @@ public class User
      */
     @NotNull
     private String lastName;
+    
+    /**
+     * Saved Pet posts.
+     */
+    @ManyToMany
+    private final Set<Pet> savedPets = new HashSet<>();
+    
+    /**
+     * @return Saved Pet posts.
+     */
+    public Set<Pet> getSavedPets()
+    {
+        return savedPets;
+    }
     
     /**
      * Constructs a <code>User</code> with the information provided.

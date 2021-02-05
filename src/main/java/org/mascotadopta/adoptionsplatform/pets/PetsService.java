@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Pets-related business logic.
@@ -168,6 +170,32 @@ public class PetsService
         Pet pet = getPetPostedBy(email, id);
         pet.updateFromDto(postPetDto);
         this.petsRepository.save(pet);
+    }
+    
+    /**
+     * Toggles the saved state in a Pet post.
+     *
+     * @param email Email of the User to modify the state from.
+     * @param id    Pet ID.
+     * @return The new saved state of the specified Pet.
+     */
+    public boolean togglePetSavedState(String email, @PathVariable long id)
+    {
+        Optional<Pet> optionalPet = this.petsRepository.findById(id);
+        if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Pet pet = optionalPet.get();
+        
+        Optional<User> optionalUser = this.usersRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        User user = optionalUser.get();
+        
+        Set<Pet> savedPets = user.getSavedPets();
+        boolean saved = savedPets.contains(pet);
+        
+        if (saved) savedPets.remove(pet);
+        else savedPets.add(pet);
+        
+        return !saved;
     }
     
     /**
