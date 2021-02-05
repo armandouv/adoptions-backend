@@ -2,10 +2,13 @@ package org.mascotadopta.adoptionsplatform.pets;
 
 import org.mascotadopta.adoptionsplatform.pets.dto.PetDto;
 import org.mascotadopta.adoptionsplatform.pets.dto.PetInfoDto;
+import org.mascotadopta.adoptionsplatform.pets.dto.PostPetDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 
 /**
  * Pets-related routes.
@@ -101,5 +104,17 @@ public class PetsController
                                          @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
         return this.petsService.getSavedPets(email, pageNumber);
+    }
+    
+    /**
+     * Posts a Pet for adoption
+     *
+     * @param email      Email of the currently authenticated User (the poster).
+     * @param postPetDto Information of the Pet being posted.
+     */
+    @PostMapping
+    public void postPet(@AuthenticationPrincipal String email, @Valid @RequestBody PostPetDto postPetDto)
+    {
+        this.petsService.postPet(email, postPetDto);
     }
 }

@@ -2,6 +2,9 @@ package org.mascotadopta.adoptionsplatform.pets;
 
 import org.mascotadopta.adoptionsplatform.pets.dto.PetDto;
 import org.mascotadopta.adoptionsplatform.pets.dto.PetInfoDto;
+import org.mascotadopta.adoptionsplatform.pets.dto.PostPetDto;
+import org.mascotadopta.adoptionsplatform.users.User;
+import org.mascotadopta.adoptionsplatform.users.UsersRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -27,13 +30,21 @@ public class PetsService
     private final PetsRepository petsRepository;
     
     /**
+     * Users repository.
+     */
+    private final UsersRepository usersRepository;
+    
+    /**
      * Single constructor.
      *
-     * @param petsRepository Pets repository.
+     * @param petsRepository  Pets repository.
+     * @param usersRepository Users repository.
      */
-    public PetsService(PetsRepository petsRepository)
+    public PetsService(PetsRepository petsRepository,
+                       UsersRepository usersRepository)
     {
         this.petsRepository = petsRepository;
+        this.usersRepository = usersRepository;
     }
     
     /**
@@ -124,11 +135,28 @@ public class PetsService
     {
         Page<Pet> pets = this.petsRepository
                 .findAllBySavedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
-        
+    
         if (pets.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
-        
+    
         return pets.map(PetInfoDto::new);
+    }
+    
+    /**
+     * Posts a Pet for adoption
+     *
+     * @param email      Email of the poster.
+     * @param postPetDto Information of the Pet being posted.
+     */
+    public void postPet(String email, PostPetDto postPetDto)
+    {
+        Optional<User> optionalUser = this.usersRepository.findByEmail(email);
+        
+        if (optionalUser.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        
+        Pet pet = new Pet(postPetDto, optionalUser.get());
+        this.petsRepository.save(pet);
     }
     
     /**

@@ -1,6 +1,7 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplication;
+import org.mascotadopta.adoptionsplatform.pets.dto.PostPetDto;
 import org.mascotadopta.adoptionsplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,14 +32,6 @@ public class Pet
     @CreatedDate
     @NotNull
     private LocalDateTime createdDate;
-    
-    /**
-     * @return User who posted this Pet for adoption.
-     */
-    public User getPostedBy()
-    {
-        return postedBy;
-    }
     
     /**
      * User who posted this Pet for adoption.
@@ -88,6 +81,37 @@ public class Pet
      */
     @NotNull
     private int zipCode;
+    
+    /**
+     * Empty constructor.
+     */
+    public Pet()
+    {
+    
+    }
+    
+    /**
+     * Constructs a Pet given a DTO and the User who posted it.
+     *
+     * @param postPetDto Pet DTO.
+     * @param postedBy   User who posted the Pet.
+     */
+    public Pet(PostPetDto postPetDto, User postedBy)
+    {
+        this.type = postPetDto.getType();
+        this.name = postPetDto.getName();
+        this.description = postPetDto.getDescription();
+        this.zipCode = postPetDto.getZipCode();
+        this.postedBy = postedBy;
+    }
+    
+    /**
+     * @return User who posted this Pet for adoption.
+     */
+    public User getPostedBy()
+    {
+        return postedBy;
+    }
     
     /**
      * @return The id of this Pet.
