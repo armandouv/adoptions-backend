@@ -78,7 +78,8 @@ public class PetsController
     /**
      * Deletes a Pet given its primary numerical key. The Pet must've been posted by the currently authenticated User.
      *
-     * @param id ID of the Pet to delete.
+     * @param email Email of the currently authenticated User.
+     * @param id    ID of the Pet to delete.
      * @throws ResponseStatusException If the Pet to delete does not exist (404 Not Found) or it wasn't posted by the
      *                                 currently authenticated User (403 Forbidden).
      */
@@ -116,5 +117,20 @@ public class PetsController
     public void postPet(@AuthenticationPrincipal String email, @Valid @RequestBody PostPetDto postPetDto)
     {
         this.petsService.postPet(email, postPetDto);
+    }
+    
+    /**
+     * Edits a Pet given its primary numerical key. The Pet must've been posted by the currently authenticated User.
+     *
+     * @param email      Email of the currently authenticated User.
+     * @param postPetDto New information of the Pet.
+     * @param id         ID of the Pet to edit.
+     * @throws ResponseStatusException If the Pet does not exist (404 Not Found).
+     */
+    @PutMapping("{id}")
+    public void editPet(@AuthenticationPrincipal String email, @Valid @RequestBody PostPetDto postPetDto,
+                        @PathVariable long id) throws ResponseStatusException
+    {
+        this.petsService.editPet(email, postPetDto, id);
     }
 }

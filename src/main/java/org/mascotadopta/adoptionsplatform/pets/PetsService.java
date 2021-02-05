@@ -111,14 +111,7 @@ public class PetsService
      */
     public void deletePetById(String email, long id) throws ResponseStatusException
     {
-        Optional<Pet> petOptional = this.petsRepository.findById(id);
-        
-        if (petOptional.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
-        Pet pet = petOptional.get();
-        if (!pet.getPostedBy().getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        
+        Pet pet = getPetPostedBy(email, id);
         this.petsRepository.delete(pet);
     }
     
@@ -147,8 +140,9 @@ public class PetsService
      *
      * @param email      Email of the poster.
      * @param postPetDto Information of the Pet being posted.
+     * @throws ResponseStatusException If the User does not exist (404 Not Found).
      */
-    public void postPet(String email, PostPetDto postPetDto)
+    public void postPet(String email, PostPetDto postPetDto) throws ResponseStatusException
     {
         Optional<User> optionalUser = this.usersRepository.findByEmail(email);
         
@@ -157,6 +151,43 @@ public class PetsService
         
         Pet pet = new Pet(postPetDto, optionalUser.get());
         this.petsRepository.save(pet);
+    }
+    
+    /**
+     * Edits a Pet given its primary numerical key. The Pet must've been posted by the User associated with
+     * <code>email</code>.
+     *
+     * @param email      Email of the User who posted the Pet.
+     * @param postPetDto New information of the Pet.
+     * @param id         ID of the Pet to edit.
+     * @throws ResponseStatusException If the Pet does not exist (404 Not Found) or it wasn't posted by the specified
+     *                                 User (403 Forbidden).
+     */
+    public void editPet(String email, PostPetDto postPetDto, long id) throws ResponseStatusException
+    {
+        Pet pet = getPetPostedBy(email, id);
+        pet.updateFromDto(postPetDto);
+        this.petsRepository.save(pet);
+    }
+    
+    /**
+     * Retrieves a Pet and checks if it was posted by the specified User.
+     *
+     * @param email Email of the poster.
+     * @param id    ID of the Pet to retrieve.
+     * @return The specified Pet.
+     * @throws ResponseStatusException If the Pet does not exist (404 Not Found) or it wasn't posted by the specified
+     *                                 User (403 Forbidden).
+     */
+    private Pet getPetPostedBy(String email, long id) throws ResponseStatusException
+    {
+        Optional<Pet> optionalPet = this.petsRepository.findById(id);
+        if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Pet pet = optionalPet.get();
+        
+        if (!pet.getPostedBy().getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        
+        return pet;
     }
     
     /**

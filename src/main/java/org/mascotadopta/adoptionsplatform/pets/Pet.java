@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
+import com.google.common.base.MoreObjects;
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionsplatform.pets.dto.PostPetDto;
 import org.mascotadopta.adoptionsplatform.users.User;
@@ -80,7 +81,7 @@ public class Pet
      * The zip code of the place where this Pet is being posted or offered.
      */
     @NotNull
-    private int zipCode;
+    private Integer zipCode;
     
     /**
      * Empty constructor.
@@ -106,7 +107,21 @@ public class Pet
     }
     
     /**
-     * @return User who posted this Pet for adoption.
+     * Updates this Pet given the new information in PostPetDto. If there are any null fields in the DTO, the original
+     * value doesn't change.
+     *
+     * @param postPetDto New Pet information.
+     */
+    public void updateFromDto(PostPetDto postPetDto)
+    {
+        this.type = MoreObjects.firstNonNull(postPetDto.getType(), this.type);
+        this.name = MoreObjects.firstNonNull(postPetDto.getName(), this.name);
+        this.description = MoreObjects.firstNonNull(postPetDto.getDescription(), this.description);
+        this.zipCode = MoreObjects.firstNonNull(postPetDto.getZipCode(), this.zipCode);
+    }
+    
+    /**
+     * @return The User who posted this Pet for adoption.
      */
     public User getPostedBy()
     {
