@@ -58,6 +58,36 @@ public class AdoptionApplication
     private QuestionnaireResponses questionnaireResponses;
     
     /**
+     * Constructs an AdoptionApplication given the related entities.
+     *
+     * @param user                   User who posted this application.
+     * @param pet                    Pet for which this application is.
+     * @param questionnaireResponses Responses to the questionnaire required in the application process.
+     */
+    public AdoptionApplication(User user, Pet pet, QuestionnaireResponses questionnaireResponses)
+    {
+        this.user = user;
+        this.pet = pet;
+        this.questionnaireResponses = questionnaireResponses;
+    }
+    
+    /**
+     * Empty constructor.
+     */
+    public AdoptionApplication()
+    {
+    
+    }
+    
+    /**
+     * @return Responses to the questionnaire required in the application process.
+     */
+    public QuestionnaireResponses getQuestionnaireResponses()
+    {
+        return questionnaireResponses;
+    }
+    
+    /**
      * @return The current status of this application.
      */
     public AdoptionApplicationStatus getStatus()

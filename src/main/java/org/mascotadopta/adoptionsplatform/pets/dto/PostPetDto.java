@@ -3,6 +3,9 @@ package org.mascotadopta.adoptionsplatform.pets.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Necessary data to post a Pet.
+ */
 public class PostPetDto
 {
     

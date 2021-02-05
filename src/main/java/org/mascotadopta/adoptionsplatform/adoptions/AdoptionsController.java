@@ -1,13 +1,13 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
 import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
+import org.mascotadopta.adoptionsplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 
 /**
  * Adoptions-related routes.
@@ -40,12 +40,24 @@ public class AdoptionsController
      * @return The requested <code>Page</code> of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    @RequestMapping("my_applications")
-    @GetMapping
+    @GetMapping("my_applications")
     public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal String email,
                                                                 @RequestParam("page") int pageNumber) throws
             ResponseStatusException
     {
         return this.adoptionsService.getUserApplications(email, pageNumber);
+    }
+    
+    /**
+     * Posts an adoption application for a Pet.
+     *
+     * @param email                      Email of the applicant.
+     * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
+     */
+    @PostMapping
+    public void postApplication(@AuthenticationPrincipal String email,
+                                @Valid @RequestBody PostAdoptionApplicationDto postAdoptionApplicationDto)
+    {
+        this.adoptionsService.postApplication(email, postAdoptionApplicationDto);
     }
 }
