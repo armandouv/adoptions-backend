@@ -14,4 +14,6 @@ import javax.validation.constraints.NotNull;
 public interface AdoptionsRepository extends CrudRepository<AdoptionApplication, Long>
 {
     Page<AdoptionApplication> findAllByUserEmail(@NotNull String userEmail, Pageable pageable);
+    
+    Page<AdoptionApplication> findAll(Pageable page);
 }

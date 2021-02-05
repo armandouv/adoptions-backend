@@ -49,6 +49,20 @@ public class AdoptionsController
     }
     
     /**
+     * Retrieves the requested page of AdoptionApplications information.
+     *
+     * @param pageNumber Page number to retrieve.
+     * @return The requested AdoptionApplication information Page.
+     * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
+     */
+    @GetMapping
+    public Page<AdoptionApplicationInfoDto> getApplicationsPage(@RequestParam("page") int pageNumber) throws
+            ResponseStatusException
+    {
+        return this.adoptionsService.getApplicationsPage(pageNumber);
+    }
+    
+    /**
      * Posts an adoption application for a Pet.
      *
      * @param email                      Email of the applicant.

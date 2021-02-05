@@ -97,15 +97,33 @@ public class AdoptionsService
         Optional<User> optionalUser = this.usersRepository.findByEmail(email);
         if (optionalUser.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
+    
         Optional<Pet> optionalPet = this.petsRepository.findById(postAdoptionApplicationDto.getPetId());
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
+    
         QuestionnaireResponses questionnaireResponses = postAdoptionApplicationDto.getQuestionnaireResponses();
         questionnaireResponses = this.questionnaireResponsesRepository.save(questionnaireResponses);
-        
+    
         AdoptionApplication adoptionApplication = new AdoptionApplication(optionalUser.get(), optionalPet.get(),
                 questionnaireResponses);
         this.adoptionsRepository.save(adoptionApplication);
+    }
+    
+    /**
+     * Retrieves the requested page of AdoptionApplications information.
+     *
+     * @param pageNumber Page number to retrieve.
+     * @return The requested AdoptionApplication information Page.
+     * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
+     */
+    public Page<AdoptionApplicationInfoDto> getApplicationsPage(int pageNumber) throws ResponseStatusException
+    {
+        Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
+                .findAll(PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
+        
+        if (adoptionApplications.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        
+        return adoptionApplications.map(AdoptionApplicationInfoDto::new);
     }
 }
