@@ -36,6 +36,11 @@ public class AdoptionApplication
     @NotNull
     private LocalDateTime createdDate;
     
+    public User getUser()
+    {
+        return user;
+    }
+    
     /**
      * User who applied for a Pet's adoption.
      */

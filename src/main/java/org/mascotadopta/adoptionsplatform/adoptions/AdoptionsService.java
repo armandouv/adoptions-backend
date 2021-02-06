@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
+import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
@@ -120,10 +121,32 @@ public class AdoptionsService
     {
         Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
                 .findAll(PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
-        
+    
         if (adoptionApplications.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
+    
         return adoptionApplications.map(AdoptionApplicationInfoDto::new);
+    }
+    
+    /**
+     * Retrieves a User's AdoptionApplication, given its primary numerical key.
+     *
+     * @param email Email of the User who posted the application.
+     * @param id    ID of the application to retrieve.
+     * @return The requested application.
+     * @throws ResponseStatusException If the requested AdoptionApplication does not exist (404 Not Found) or it wasn't
+     *                                 posted by the specified User (403 Forbidden).
+     */
+    public AdoptionApplicationDto getApplicationById(String email, long id) throws ResponseStatusException
+    {
+        Optional<AdoptionApplication> optionalAdoptionApplication = this.adoptionsRepository.findById(id);
+        if (optionalAdoptionApplication.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        AdoptionApplication adoptionApplication = optionalAdoptionApplication.get();
+        
+        if (!adoptionApplication.getUser().getEmail().equals(email))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        
+        return new AdoptionApplicationDto(adoptionApplication);
     }
 }

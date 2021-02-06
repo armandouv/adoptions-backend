@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
+import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.springframework.data.domain.Page;
@@ -73,5 +74,21 @@ public class AdoptionsController
                                 @Valid @RequestBody PostAdoptionApplicationDto postAdoptionApplicationDto)
     {
         this.adoptionsService.postApplication(email, postAdoptionApplicationDto);
+    }
+    
+    /**
+     * Retrieves a User's AdoptionApplication, given its primary numerical key.
+     *
+     * @param email Email of the currently authenticated User.
+     * @param id    ID of the application to retrieve.
+     * @return The requested application.
+     * @throws ResponseStatusException If the requested AdoptionApplication does not exist (404 Not Found) or it wasn't
+     *                                 posted by the authenticated User (403 Forbidden).
+     */
+    @GetMapping("{id}")
+    public AdoptionApplicationDto getApplicationById(@AuthenticationPrincipal String email,
+                                                     @PathVariable long id) throws ResponseStatusException
+    {
+        return this.adoptionsService.getApplicationById(email, id);
     }
 }
