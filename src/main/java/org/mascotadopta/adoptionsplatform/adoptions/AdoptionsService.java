@@ -139,14 +139,41 @@ public class AdoptionsService
      */
     public AdoptionApplicationDto getApplicationById(String email, long id) throws ResponseStatusException
     {
+        AdoptionApplication adoptionApplication = getApplicationPostedBy(email, id);
+        return new AdoptionApplicationDto(adoptionApplication);
+    }
+    
+    /**
+     * Deletes the specified application for a Pet.
+     *
+     * @param email Email of the User who posted the application.
+     * @param id    ID of the application to delete.
+     * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
+     *                                 not the specified User (403 Forbidden).
+     */
+    public void deleteApplicationById(String email, long id) throws ResponseStatusException
+    {
+        AdoptionApplication adoptionApplication = getApplicationPostedBy(email, id);
+        this.adoptionsRepository.delete(adoptionApplication);
+    }
+    
+    /**
+     * Retrieves an AdoptionApplication and checks if it was posted by the specified User.
+     *
+     * @param email Email of the applicant.
+     * @param id    ID of the application to retrieve.
+     * @return The specified application.
+     * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
+     *                                 not the specified User (403 Forbidden).
+     */
+    private AdoptionApplication getApplicationPostedBy(String email, long id) throws ResponseStatusException
+    {
         Optional<AdoptionApplication> optionalAdoptionApplication = this.adoptionsRepository.findById(id);
-        if (optionalAdoptionApplication.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (optionalAdoptionApplication.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         AdoptionApplication adoptionApplication = optionalAdoptionApplication.get();
         
         if (!adoptionApplication.getUser().getEmail().equals(email))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        
-        return new AdoptionApplicationDto(adoptionApplication);
+        return adoptionApplication;
     }
 }

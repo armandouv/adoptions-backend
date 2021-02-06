@@ -91,4 +91,19 @@ public class AdoptionsController
     {
         return this.adoptionsService.getApplicationById(email, id);
     }
+    
+    /**
+     * Withdraws the specified application for a Pet.
+     *
+     * @param email Email of the currently authenticated User.
+     * @param id    ID of the application to withdraw.
+     * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
+     *                                 not the authenticated User (403 Forbidden).
+     */
+    @DeleteMapping("{id}")
+    public void withdrawApplicationById(@AuthenticationPrincipal String email, @PathVariable long id) throws
+            ResponseStatusException
+    {
+        this.adoptionsService.deleteApplicationById(email, id);
+    }
 }
