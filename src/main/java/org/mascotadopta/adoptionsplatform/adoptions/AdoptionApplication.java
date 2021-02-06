@@ -19,7 +19,7 @@ public class AdoptionApplication
     /**
      * The status of this application.
      */
-    private final AdoptionApplicationStatus status = AdoptionApplicationStatus.IN_PROGRESS;
+    private AdoptionApplicationStatus status = AdoptionApplicationStatus.IN_PROGRESS;
     
     /**
      * Primary numerical key.
@@ -35,11 +35,6 @@ public class AdoptionApplication
     @CreatedDate
     @NotNull
     private LocalDateTime createdDate;
-    
-    public User getUser()
-    {
-        return user;
-    }
     
     /**
      * User who applied for a Pet's adoption.
@@ -84,6 +79,11 @@ public class AdoptionApplication
     
     }
     
+    public User getUser()
+    {
+        return user;
+    }
+    
     /**
      * @return Responses to the questionnaire required in the application process.
      */
@@ -98,6 +98,11 @@ public class AdoptionApplication
     public AdoptionApplicationStatus getStatus()
     {
         return status;
+    }
+    
+    public void setStatus(AdoptionApplicationStatus status)
+    {
+        this.status = status;
     }
     
     /**

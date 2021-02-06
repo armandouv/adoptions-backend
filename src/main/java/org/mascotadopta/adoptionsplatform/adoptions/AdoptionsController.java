@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionsplatform.adoptions;
 
 import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationInfoDto;
+import org.mascotadopta.adoptionsplatform.adoptions.dto.AdoptionApplicationStatusDto;
 import org.mascotadopta.adoptionsplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -105,5 +106,22 @@ public class AdoptionsController
             ResponseStatusException
     {
         this.adoptionsService.deleteApplicationById(email, id);
+    }
+    
+    /**
+     * Updates the status of the specified application.
+     *
+     * @param email                        Email of the currently authenticated User, who must be the poster of the Pet
+     *                                     for which the application is.
+     * @param id                           ID of the application to update.
+     * @param adoptionApplicationStatusDto Necessary information to update the application status.
+     * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the currently
+     *                                 authenticated User is not the poster of the Pet for which the application is.
+     */
+    @PatchMapping("{id}")
+    public void updateApplicationStatus(@AuthenticationPrincipal String email, @PathVariable long id, @RequestBody
+            AdoptionApplicationStatusDto adoptionApplicationStatusDto) throws ResponseStatusException
+    {
+        this.adoptionsService.updateApplicationStatus(email, id, adoptionApplicationStatusDto.getStatus());
     }
 }

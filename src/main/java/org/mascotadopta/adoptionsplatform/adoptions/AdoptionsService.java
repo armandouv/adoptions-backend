@@ -158,6 +158,28 @@ public class AdoptionsService
     }
     
     /**
+     * Updates the status of the specified application.
+     *
+     * @param email     Email of the poster of the Pet for which the application is.
+     * @param id        ID of the application to update.
+     * @param newStatus New application status.
+     * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the specified User
+     *                                 is not the poster of the Pet for which the application is.
+     */
+    public void updateApplicationStatus(String email, long id, AdoptionApplicationStatus newStatus)
+    {
+        Optional<AdoptionApplication> optionalAdoptionApplication = this.adoptionsRepository.findById(id);
+        if (optionalAdoptionApplication.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        AdoptionApplication adoptionApplication = optionalAdoptionApplication.get();
+        
+        User petPoster = adoptionApplication.getPet().getPostedBy();
+        if (!petPoster.getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        
+        adoptionApplication.setStatus(newStatus);
+        this.adoptionsRepository.save(adoptionApplication);
+    }
+    
+    /**
      * Retrieves an AdoptionApplication and checks if it was posted by the specified User.
      *
      * @param email Email of the applicant.
