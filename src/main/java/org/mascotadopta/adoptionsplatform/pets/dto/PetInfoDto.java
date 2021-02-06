@@ -1,6 +1,5 @@
 package org.mascotadopta.adoptionsplatform.pets.dto;
-
-
+import lombok.Getter;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
 
 import java.time.LocalDateTime;
@@ -8,6 +7,7 @@ import java.time.LocalDateTime;
 /**
  * Data Transfer Object that contains a limited view of a Pet.
  */
+@Getter
 public class PetInfoDto
 {
     /**
