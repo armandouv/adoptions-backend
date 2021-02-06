@@ -61,8 +61,7 @@ public class UsersController
      * @param email             Email address of the currently authenticated User.
      * @param updateSettingsDto New settings.
      */
-    @RequestMapping("settings")
-    @PutMapping
+    @PutMapping("settings")
     public void updateSettings(@AuthenticationPrincipal String email,
                                @Valid @RequestBody UpdateSettingsDto updateSettingsDto)
     {

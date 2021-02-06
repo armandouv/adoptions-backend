@@ -54,8 +54,7 @@ public class PetsController
      * @return The requested <code>Page</code> of the User's pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    @RequestMapping("my_posts")
-    @GetMapping
+    @GetMapping("my_posts")
     public Page<PetInfoDto> getUserPets(@AuthenticationPrincipal String email,
                                         @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
@@ -99,8 +98,7 @@ public class PetsController
      * @return The requested Page of the User's saved pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    @RequestMapping("saved")
-    @GetMapping
+    @GetMapping("saved")
     public Page<PetInfoDto> getSavedPets(@AuthenticationPrincipal String email,
                                          @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
