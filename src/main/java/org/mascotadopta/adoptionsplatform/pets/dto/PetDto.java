@@ -1,30 +1,46 @@
 package org.mascotadopta.adoptionsplatform.pets.dto;
 
+import lombok.Value;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
 
-/**
- * Data Transfer Object that contains a detailed view of a Pet.
- */
-public class PetDto extends PetInfoDto
+import java.time.LocalDateTime;
+
+@Value
+public class PetDto
 {
-    /**
-     * Relevant information about this Pet.
-     */
-    private final String description;
+    long id;
+    
+    LocalDateTime createdDate;
+    
+    String type;
+    
+    boolean isActive;
+    
+    String name;
+    
+    int zipCode;
+    
+    String description;
     
     /**
      * Number of application processes for this Pet, regardless of status.
      */
-    private final long numberOfApplications;
+    long numberOfApplications;
     
     /**
      * Single constructor. Fills the required data given a <code>Pet</code>.
      *
-     * @param pet <code>Pet</code> to build this DTO from.
+     * @param pet                  <code>Pet</code> to build this DTO from.
+     * @param numberOfApplications Number of application processes for this Pet.
      */
     public PetDto(Pet pet, long numberOfApplications)
     {
-        super(pet);
+        this.id = pet.getId();
+        this.createdDate = pet.getCreatedDate();
+        this.type = pet.getType();
+        this.isActive = pet.isActive();
+        this.name = pet.getName();
+        this.zipCode = pet.getZipCode();
         this.description = pet.getDescription();
         this.numberOfApplications = numberOfApplications;
     }

@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.pets.dto;
-import lombok.Getter;
+
+import lombok.Value;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
 
 import java.time.LocalDateTime;
@@ -7,38 +8,20 @@ import java.time.LocalDateTime;
 /**
  * Data Transfer Object that contains a limited view of a Pet.
  */
-@Getter
+@Value
 public class PetInfoDto
 {
-    /**
-     * Primary numerical key.
-     */
-    private final long id;
+    long id;
     
-    /**
-     * Date of Pet creation.
-     */
-    private final LocalDateTime createdDate;
+    LocalDateTime createdDate;
     
-    /**
-     * Animal type of this Pet, e.g. a dog, cat, etc.
-     */
-    private final String type;
+    String type;
     
-    /**
-     * Whether this Pet posting is still available for adoption.
-     */
-    private final boolean isActive;
+    boolean isActive;
     
-    /**
-     * The name of this Pet.
-     */
-    private final String name;
+    String name;
     
-    /**
-     * The zip code of the place where this Pet is being posted or offered.
-     */
-    private final int zipCode;
+    int zipCode;
     
     /**
      * Single constructor. Fills the required data given a <code>Pet</code>.

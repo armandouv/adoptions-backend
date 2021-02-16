@@ -1,5 +1,6 @@
 package org.mascotadopta.adoptionsplatform.adoptions.dto;
 
+import lombok.Value;
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplicationStatus;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
@@ -9,27 +10,16 @@ import java.time.LocalDateTime;
 /**
  * Data Transfer Object that contains a limited view of an AdoptionApplication.
  */
+@Value
 public class AdoptionApplicationInfoDto
 {
-    /**
-     * The status of this application.
-     */
-    private final AdoptionApplicationStatus status;
+    AdoptionApplicationStatus status;
     
-    /**
-     * Primary numerical key.
-     */
-    private final long id;
+    long id;
     
-    /**
-     * Date of application creation.
-     */
-    private final LocalDateTime createdDate;
+    LocalDateTime createdDate;
     
-    /**
-     * Pet for which this application is.
-     */
-    private final Pet pet;
+    Pet pet;
     
     /**
      * Single constructor. Fills the required data given an <code>AdoptionApplication</code>.
