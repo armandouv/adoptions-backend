@@ -1,5 +1,7 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mascotadopta.adoptionsplatform.pets.Pet;
 import org.mascotadopta.adoptionsplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 /**
  * An adoption request.
  */
+@Data
+@NoArgsConstructor
 @Entity(name = "AdoptionApplication")
 @EntityListeners(AuditingEntityListener.class)
 public class AdoptionApplication
@@ -69,63 +73,5 @@ public class AdoptionApplication
         this.user = user;
         this.pet = pet;
         this.questionnaireResponses = questionnaireResponses;
-    }
-    
-    /**
-     * Empty constructor.
-     */
-    public AdoptionApplication()
-    {
-    
-    }
-    
-    public User getUser()
-    {
-        return user;
-    }
-    
-    /**
-     * @return Responses to the questionnaire required in the application process.
-     */
-    public QuestionnaireResponses getQuestionnaireResponses()
-    {
-        return questionnaireResponses;
-    }
-    
-    /**
-     * @return The current status of this application.
-     */
-    public AdoptionApplicationStatus getStatus()
-    {
-        return status;
-    }
-    
-    public void setStatus(AdoptionApplicationStatus status)
-    {
-        this.status = status;
-    }
-    
-    /**
-     * @return The id of this application.
-     */
-    public long getId()
-    {
-        return id;
-    }
-    
-    /**
-     * @return The timestamp when this application was created.
-     */
-    public LocalDateTime getCreatedDate()
-    {
-        return createdDate;
-    }
-    
-    /**
-     * @return The pet for which this application is.
-     */
-    public Pet getPet()
-    {
-        return pet;
     }
 }

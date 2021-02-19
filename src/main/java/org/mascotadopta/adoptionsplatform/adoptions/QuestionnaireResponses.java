@@ -1,5 +1,7 @@
 package org.mascotadopta.adoptionsplatform.adoptions;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
@@ -11,6 +13,8 @@ import javax.validation.constraints.NotNull;
 /**
  * Responses to the questionnaire required in the adoption application process.
  */
+@Data
+@NoArgsConstructor
 @Entity(name = "QuestionnaireResponses")
 @EntityListeners(AuditingEntityListener.class)
 public class QuestionnaireResponses

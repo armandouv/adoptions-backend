@@ -1,5 +1,7 @@
 package org.mascotadopta.adoptionsplatform.users.settings;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mascotadopta.adoptionsplatform.users.settings.dto.UpdateSettingsDto;
 
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.validation.constraints.NotNull;
 /**
  * A User's configuration.
  */
+@Data
+@NoArgsConstructor
 @Entity(name = "UserSettings")
 public class UserSettings
 {
@@ -38,13 +42,6 @@ public class UserSettings
      */
     @NotNull
     private boolean notifyRejectedApplications = true;
-    
-    /**
-     * Default constructor. Keeps all attributes with their values set as <code>true</code>.
-     */
-    public UserSettings()
-    {
-    }
     
     /**
      * Updates this settings given a DTO.

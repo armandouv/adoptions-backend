@@ -1,6 +1,8 @@
 package org.mascotadopta.adoptionsplatform.pets;
 
 import com.google.common.base.MoreObjects;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mascotadopta.adoptionsplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionsplatform.pets.dto.PostPetDto;
 import org.mascotadopta.adoptionsplatform.users.User;
@@ -15,6 +17,8 @@ import java.util.List;
 /**
  * A pet for adoption.
  */
+@Data
+@NoArgsConstructor
 @Entity(name = "Pet")
 @EntityListeners(AuditingEntityListener.class)
 public class Pet
@@ -84,14 +88,6 @@ public class Pet
     private Integer zipCode;
     
     /**
-     * Empty constructor.
-     */
-    public Pet()
-    {
-    
-    }
-    
-    /**
      * Constructs a Pet given a DTO and the User who posted it.
      *
      * @param postPetDto Pet DTO.
@@ -118,69 +114,5 @@ public class Pet
         this.name = MoreObjects.firstNonNull(postPetDto.getName(), this.name);
         this.description = MoreObjects.firstNonNull(postPetDto.getDescription(), this.description);
         this.zipCode = MoreObjects.firstNonNull(postPetDto.getZipCode(), this.zipCode);
-    }
-    
-    /**
-     * @return The User who posted this Pet for adoption.
-     */
-    public User getPostedBy()
-    {
-        return postedBy;
-    }
-    
-    /**
-     * @return The id of this Pet.
-     */
-    public long getId()
-    {
-        return id;
-    }
-    
-    /**
-     * @return The timestamp when this Pet was posted for adoption.
-     */
-    public LocalDateTime getCreatedDate()
-    {
-        return createdDate;
-    }
-    
-    /**
-     * @return The type of this Pet, e.g. a dog, cat, etc.
-     */
-    public String getType()
-    {
-        return type;
-    }
-    
-    /**
-     * @return Whether this Pet posting is still available for adoption or not.
-     */
-    public boolean isActive()
-    {
-        return isActive;
-    }
-    
-    /**
-     * @return The name of this Pet
-     */
-    public String getName()
-    {
-        return name;
-    }
-    
-    /**
-     * @return Relevant information about this Pet.
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-    
-    /**
-     * @return The zip code of the place where this Pet is being posted or offered.
-     */
-    public int getZipCode()
-    {
-        return zipCode;
     }
 }
