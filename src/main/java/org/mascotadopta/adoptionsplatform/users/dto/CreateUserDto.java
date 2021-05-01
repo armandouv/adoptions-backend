@@ -14,6 +14,7 @@ public class CreateUserDto
     private String email;
     
     @NotBlank
+    //Add validation
     private String password;
     
     @NotBlank

@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,24 +57,27 @@ public class Pet
      * Animal type of this Pet, e.g. a dog, cat, etc.
      */
     @NotNull
+    @Size(min = 1, message = "Pet type must be at least one character long.")
     private String type;
     
     /**
      * Whether this Pet posting is still available for adoption or not.
      */
     @NotNull
-    private boolean isActive;
+    private boolean isActive = true;
     
     /**
      * The name of this Pet.
      */
     @NotNull
+    @Size(min = 2, message = "Pet name must be at least two characters long.")
     private String name;
     
     /**
      * Relevant information about this Pet.
      */
     @NotNull
+    @Size(min = 30, message = "Pet description must be at least 30 characters long.")
     private String description;
     
     /**
@@ -85,6 +90,7 @@ public class Pet
      * The zip code of the place where this Pet is being posted or offered.
      */
     @NotNull
+    @Positive
     private Integer zipCode;
     
     /**

@@ -8,7 +8,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +28,7 @@ public class User
      * Settings associated with this User.
      */
     @OneToOne
+    @Size(min = 1)
     private UserSettings settings;
     
     /**
@@ -53,6 +56,7 @@ public class User
      */
     @Column(unique = true)
     @NotNull
+    @Email
     private String email;
     
     /**
