@@ -6,6 +6,7 @@ import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationStatus
 import org.mascotadopta.adoptionplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,11 +44,11 @@ public class AdoptionsController
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
     @GetMapping("my_applications")
-    public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal String email,
+    public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal OidcUser oidcUser,
                                                                 @RequestParam("page") int pageNumber) throws
             ResponseStatusException
     {
-        return this.adoptionsService.getUserApplications(email, pageNumber);
+        return this.adoptionsService.getUserApplications(oidcUser.get, pageNumber);
     }
     
     /**
