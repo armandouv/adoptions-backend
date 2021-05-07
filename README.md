@@ -1,2 +1,3 @@
-# adoptions-backend
-A REST API for a pet adoption platform.
+# mascotadopta-rest-api
+
+REST API for Mascotadopta, a pet adoption platform

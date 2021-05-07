@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.mascotadopta</groupId>
-    <artifactId>adoptionsplatform</artifactId>
+    <artifactId>adoptionplatform</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Mascotadopta REST API</name>
-    <description>A REST API for a pet adoption platform</description>
+    <description>REST API for a pet adoption platform</description>
 
     <properties>
         <java.version>15</java.version>
