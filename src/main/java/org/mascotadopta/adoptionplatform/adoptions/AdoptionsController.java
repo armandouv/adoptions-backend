@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 /**
  * Adoptions-related routes.
@@ -38,7 +39,7 @@ public class AdoptionsController
      * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
      * (<code>AdoptionApplicationInfoDto</code>).
      *
-     * @param email      Email of the currently authenticated User.
+     * @param oidcUser   Currently authenticated User.
      * @param pageNumber Page number to retrieve.
      * @return The requested <code>Page</code> of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
@@ -48,7 +49,7 @@ public class AdoptionsController
                                                                 @RequestParam("page") int pageNumber) throws
             ResponseStatusException
     {
-        return this.adoptionsService.getUserApplications(oidcUser.get, pageNumber);
+        return this.adoptionsService.getUserApplications(UUID.fromString(oidcUser.getSubject()), pageNumber);
     }
     
     /**

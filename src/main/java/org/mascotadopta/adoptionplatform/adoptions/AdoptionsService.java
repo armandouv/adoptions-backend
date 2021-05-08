@@ -79,7 +79,7 @@ public class AdoptionsService
             ResponseStatusException
     {
         Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
-                .findAllByUserEmail(email, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
+                .findAllByUserUuid(userUUID, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
         
         if (adoptionApplications.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");

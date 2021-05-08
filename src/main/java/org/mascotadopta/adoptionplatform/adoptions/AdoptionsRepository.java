@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * Adoptions' data retrieval functionality.
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Repository
 public interface AdoptionsRepository extends CrudRepository<AdoptionApplication, Long>
 {
-    Page<AdoptionApplication> findAllByUserEmail(@NotNull String userEmail, Pageable pageable);
+    Page<AdoptionApplication> findAllByUserUuid(UUID userUUID, Pageable pageable);
     
     Page<AdoptionApplication> findAll(Pageable page);
 }

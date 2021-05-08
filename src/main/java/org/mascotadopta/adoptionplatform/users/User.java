@@ -46,6 +46,10 @@ public class User
     @NotNull
     private UUID uuid;
     
+    @Column(unique = true)
+    @NotNull
+    private String email;
+    
     /**
      * Date of User creation.
      */
