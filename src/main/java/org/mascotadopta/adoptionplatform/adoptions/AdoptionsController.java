@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 /**
  * Adoptions-related routes.
@@ -49,7 +48,7 @@ public class AdoptionsController
                                                                 @RequestParam("page") int pageNumber) throws
             ResponseStatusException
     {
-        return this.adoptionsService.getUserApplications(UUID.fromString(oidcUser.getSubject()), pageNumber);
+        return this.adoptionsService.getUserApplications(oidcUser.getSubject(), pageNumber);
     }
     
     /**

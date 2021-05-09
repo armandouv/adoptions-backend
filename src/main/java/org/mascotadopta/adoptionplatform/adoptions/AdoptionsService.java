@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Adoptions-related business logic.
@@ -70,20 +69,20 @@ public class AdoptionsService
      * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
      * (<code>AdoptionApplicationInfoDto</code>).
      *
-     * @param email      The email of the User to retrieve the applications from.
-     * @param pageNumber The requested page number.
+     * @param authServerId ID of the User to retrieve the applications from.
+     * @param pageNumber   The requested page number.
      * @return The requested page of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    public Page<AdoptionApplicationInfoDto> getUserApplications(UUID userUUID, int pageNumber) throws
+    public Page<AdoptionApplicationInfoDto> getUserApplications(String authServerId, int pageNumber) throws
             ResponseStatusException
     {
         Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
-                .findAllByUserUuid(userUUID, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
-        
+                .findAllByUserAuthServerId(authServerId, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
+    
         if (adoptionApplications.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
-        
+    
         return adoptionApplications.map(AdoptionApplicationInfoDto::new);
     }
     
