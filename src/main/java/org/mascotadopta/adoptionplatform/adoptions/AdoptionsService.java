@@ -89,22 +89,22 @@ public class AdoptionsService
     /**
      * Posts an adoption application for a Pet.
      *
-     * @param email                      Email of the applicant.
+     * @param authServerId               Applicant's ID.
      * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
      */
-    public void postApplication(String email, PostAdoptionApplicationDto postAdoptionApplicationDto) throws
+    public void postApplication(String authServerId, PostAdoptionApplicationDto postAdoptionApplicationDto) throws
             ResponseStatusException
     {
-        Optional<User> optionalUser = this.usersRepository.findByEmail(email);
+        Optional<User> optionalUser = this.usersRepository.findByAuthServerId(authServerId);
         if (optionalUser.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    
+        
         Optional<Pet> optionalPet = this.petsRepository.findById(postAdoptionApplicationDto.getPetId());
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    
+        
         QuestionnaireResponses questionnaireResponses = postAdoptionApplicationDto.getQuestionnaireResponses();
         questionnaireResponses = this.questionnaireResponsesRepository.save(questionnaireResponses);
-    
+        
         AdoptionApplication adoptionApplication = new AdoptionApplication(optionalUser.get(), optionalPet.get(),
                 questionnaireResponses);
         this.adoptionsRepository.save(adoptionApplication);

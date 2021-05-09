@@ -68,14 +68,14 @@ public class AdoptionsController
     /**
      * Posts an adoption application for a Pet.
      *
-     * @param email                      Email of the applicant.
+     * @param oidcUser                   Applicant
      * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
      */
     @PostMapping
-    public void postApplication(@AuthenticationPrincipal String email,
+    public void postApplication(@AuthenticationPrincipal OidcUser oidcUser,
                                 @Valid @RequestBody PostAdoptionApplicationDto postAdoptionApplicationDto)
     {
-        this.adoptionsService.postApplication(email, postAdoptionApplicationDto);
+        this.adoptionsService.postApplication(oidcUser.getSubject(), postAdoptionApplicationDto);
     }
     
     /**
