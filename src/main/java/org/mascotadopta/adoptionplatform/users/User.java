@@ -8,12 +8,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * A registered user.
@@ -43,8 +43,8 @@ public class User
      * User ID created in identity provider.
      */
     @Column(unique = true)
-    @NotNull
-    private UUID uuid;
+    @NotBlank
+    private String authServerId;
     
     @Column(unique = true)
     @NotNull
@@ -66,10 +66,12 @@ public class User
     /**
      * Constructs a <code>User</code> with the information provided.
      *
-     * @param uuid User ID generated in identity provider.
+     * @param authServerId User ID generated in identity provider.
+     * @param email        User's email
      */
-    public User(UUID uuid)
+    public User(String authServerId, String email)
     {
-        this.uuid = uuid;
+        this.authServerId = authServerId;
+        this.email = email;
     }
 }

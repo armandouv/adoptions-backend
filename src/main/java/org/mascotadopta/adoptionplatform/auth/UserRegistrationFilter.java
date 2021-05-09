@@ -1,7 +1,6 @@
 package org.mascotadopta.adoptionplatform.auth;
 
-import org.mascotadopta.adoptionplatform.users.User;
-import org.mascotadopta.adoptionplatform.users.UsersRepository;
+import org.mascotadopta.adoptionplatform.users.UsersService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
@@ -12,16 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 @Component
 public class UserRegistrationFilter extends GenericFilterBean
 {
-    private final UsersRepository usersRepository;
+    private final UsersService usersService;
     
-    public UserRegistrationFilter(UsersRepository usersRepository)
+    public UserRegistrationFilter(UsersService usersService)
     {
-        this.usersRepository = usersRepository;
+        this.usersService = usersService;
     }
     
     @Override
@@ -29,13 +27,6 @@ public class UserRegistrationFilter extends GenericFilterBean
             IOException, ServletException
     {
         OidcUser user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        if (user != null)
-        {
-            UUID userUuid = UUID.fromString(user.getSubject());
-            if (usersRepository.existsByUuid(userUuid)) return;
-            User newUser = new User(userUuid);
-            usersRepository.save(newUser);
-        }
+        if (user != null) usersService.processUserRegistration(user);
     }
 }

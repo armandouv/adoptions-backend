@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Users' data retrieval functionality.
@@ -14,9 +13,9 @@ public interface UsersRepository extends CrudRepository<User, Long>
 {
     Optional<User> findByEmail(String email);
     
-    Optional<User> findByUuid(UUID uuid);
+    Optional<User> findByAuthServerId(String authServerId);
     
-    boolean existsByUuid(UUID uuid);
+    boolean existsByAuthServerId(String authServerId);
     
     boolean existsByEmail(String email);
 }
