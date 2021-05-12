@@ -7,6 +7,7 @@ import org.mascotadopta.adoptionplatform.adoptions.dto.PostAdoptionApplicationDt
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,17 +39,17 @@ public class AdoptionsController
      * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
      * (<code>AdoptionApplicationInfoDto</code>).
      *
-     * @param oidcUser   Currently authenticated User.
+     * @param principal  Currently authenticated User.
      * @param pageNumber Page number to retrieve.
      * @return The requested <code>Page</code> of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
     @GetMapping("my_applications")
-    public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal OidcUser oidcUser,
+    public Page<AdoptionApplicationInfoDto> getUserApplications(@AuthenticationPrincipal Jwt principal,
                                                                 @RequestParam("page") int pageNumber) throws
             ResponseStatusException
     {
-        return this.adoptionsService.getUserApplications(oidcUser.getSubject(), pageNumber);
+        return this.adoptionsService.getUserApplications(principal.getSubject(), pageNumber);
     }
     
     /**

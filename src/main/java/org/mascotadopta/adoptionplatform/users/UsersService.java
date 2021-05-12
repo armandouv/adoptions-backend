@@ -4,7 +4,7 @@ import org.mascotadopta.adoptionplatform.users.settings.UserSettings;
 import org.mascotadopta.adoptionplatform.users.settings.UserSettingsRepository;
 import org.mascotadopta.adoptionplatform.users.settings.dto.UpdateSettingsDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -62,18 +62,19 @@ public class UsersService
      * Checks if a User is already stored in this server's DB. If it isn't, the corresponding new User would be created
      * and stored.
      *
-     * @param oidcUser User to perform the checks in.
+     * @param jwt JWT containing relevant user information.
      */
-    public void processUserRegistration(OidcUser oidcUser)
+    public void processUserRegistration(Jwt jwt)
     {
-        String authServerId = oidcUser.getSubject();
+        String authServerId = jwt.getSubject();
         // User already exists in DB.
         if (usersRepository.existsByAuthServerId(authServerId)) return;
         
         UserSettings userSettings = new UserSettings();
         userSettings = userSettingsRepository.save(userSettings);
         
-        User newUser = new User(authServerId, oidcUser.getEmail());
+        String email = jwt.getClaimAsString("email");
+        User newUser = new User(authServerId, email);
         newUser.setSettings(userSettings);
         usersRepository.save(newUser);
     }

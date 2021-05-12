@@ -19,6 +19,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http.cors().and()
+                .authorizeRequests()
+                .antMatchers("/adoptions/my_applications").authenticated().and()
                 .addFilterAfter(userRegistrationFilter, BearerTokenAuthenticationFilter.class)
                 .oauth2ResourceServer()
                 .jwt();
