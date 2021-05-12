@@ -5,11 +5,11 @@ import org.mascotadopta.adoptionplatform.pets.dto.PetInfoDto;
 import org.mascotadopta.adoptionplatform.pets.dto.PostPetDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-// TODO: Change email for ID
 
 /**
  * Pets-related routes.
@@ -50,16 +50,16 @@ public class PetsController
      * Retrieves the requested page of a User's pet posts. Only a limited view of the data is returned
      * (<code>PetInfoDto</code>).
      *
-     * @param email      Email of the currently authenticated User.
+     * @param principal  Currently authenticated User.
      * @param pageNumber Page number to retrieve.
      * @return The requested <code>Page</code> of the User's pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
     @GetMapping("my_posts")
-    public Page<PetInfoDto> getUserPets(@AuthenticationPrincipal String email,
+    public Page<PetInfoDto> getUserPets(@AuthenticationPrincipal Jwt principal,
                                         @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
-        return this.petsService.getUserPets(email, pageNumber);
+        return this.petsService.getUserPets(principal.getSubject(), pageNumber);
     }
     
     /**

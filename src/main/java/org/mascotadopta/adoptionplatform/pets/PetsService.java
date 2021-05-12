@@ -70,15 +70,15 @@ public class PetsService
      * Retrieves the requested page of a User's pet posts. Only a limited view of the data is returned
      * (<code>PetInfoDto</code>).
      *
-     * @param email      The email of the User to retrieve the pets posts from.
-     * @param pageNumber The requested page number.
+     * @param userAuthServerId External ID of the User to retrieve the pets posts from.
+     * @param pageNumber       The requested page number.
      * @return The requested page of the User's pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    public Page<PetInfoDto> getUserPets(String email, int pageNumber) throws ResponseStatusException
+    public Page<PetInfoDto> getUserPets(String userAuthServerId, int pageNumber) throws ResponseStatusException
     {
         Page<Pet> pets = this.petsRepository
-                .findAllByPostedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
+                .findAllByPostedByAuthServerId(userAuthServerId, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
     
         if (pets.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
@@ -129,7 +129,7 @@ public class PetsService
     public Page<PetInfoDto> getSavedPets(String email, int pageNumber) throws ResponseStatusException
     {
         Page<Pet> pets = this.petsRepository
-                .findAllBySavedByEmail(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
+                .findAllBySavedByAuthServerId(email, PageRequest.of(pageNumber, PETS_PAGE_SIZE));
     
         if (pets.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
