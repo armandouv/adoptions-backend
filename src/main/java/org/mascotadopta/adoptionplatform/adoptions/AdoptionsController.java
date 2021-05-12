@@ -68,30 +68,30 @@ public class AdoptionsController
     /**
      * Posts an adoption application for a Pet.
      *
-     * @param jwt                        Applicant
+     * @param principal                  Applicant (currently authenticated).
      * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
      */
     @PostMapping
-    public void postApplication(@AuthenticationPrincipal Jwt jwt,
+    public void postApplication(@AuthenticationPrincipal Jwt principal,
                                 @Valid @RequestBody PostAdoptionApplicationDto postAdoptionApplicationDto)
     {
-        this.adoptionsService.postApplication(jwt.getSubject(), postAdoptionApplicationDto);
+        this.adoptionsService.postApplication(principal.getSubject(), postAdoptionApplicationDto);
     }
     
     /**
      * Retrieves a User's AdoptionApplication, given its primary numerical key.
      *
-     * @param email Email of the currently authenticated User.
+     * @param principal Currently authenticated User.
      * @param id    ID of the application to retrieve.
      * @return The requested application.
      * @throws ResponseStatusException If the requested AdoptionApplication does not exist (404 Not Found) or it wasn't
      *                                 posted by the authenticated User (403 Forbidden).
      */
     @GetMapping("{id}")
-    public AdoptionApplicationDto getApplicationById(@AuthenticationPrincipal String email,
+    public AdoptionApplicationDto getApplicationById(@AuthenticationPrincipal Jwt principal,
                                                      @PathVariable long id) throws ResponseStatusException
     {
-        return this.adoptionsService.getApplicationById(email, id);
+        return this.adoptionsService.getApplicationById(principal.getSubject(), id);
     }
     
     /**
