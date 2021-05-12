@@ -112,17 +112,18 @@ public class AdoptionsController
     /**
      * Updates the status of the specified application.
      *
-     * @param email                        Email of the currently authenticated User, who must be the poster of the Pet
-     *                                     for which the application is.
+     * @param principal                    Currently authenticated User, who must be the poster of the Pet for which the
+     *                                     application is.
      * @param id                           ID of the application to update.
      * @param adoptionApplicationStatusDto Necessary information to update the application status.
      * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the currently
      *                                 authenticated User is not the poster of the Pet for which the application is.
      */
     @PatchMapping("{id}")
-    public void updateApplicationStatus(@AuthenticationPrincipal String email, @PathVariable long id, @RequestBody
+    public void updateApplicationStatus(@AuthenticationPrincipal Jwt principal, @PathVariable long id, @RequestBody
             AdoptionApplicationStatusDto adoptionApplicationStatusDto) throws ResponseStatusException
     {
-        this.adoptionsService.updateApplicationStatus(email, id, adoptionApplicationStatusDto.getStatus());
+        this.adoptionsService
+                .updateApplicationStatus(principal.getSubject(), id, adoptionApplicationStatusDto.getStatus());
     }
 }
