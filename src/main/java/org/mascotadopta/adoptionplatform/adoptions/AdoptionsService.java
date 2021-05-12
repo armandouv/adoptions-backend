@@ -69,16 +69,16 @@ public class AdoptionsService
      * Retrieves the requested page of a User's adoption applications. Only a limited view of the data is returned
      * (<code>AdoptionApplicationInfoDto</code>).
      *
-     * @param authServerId External ID of the User to retrieve the applications from.
-     * @param pageNumber   The requested page number.
+     * @param userAuthServerId External ID of the User to retrieve the applications from.
+     * @param pageNumber       The requested page number.
      * @return The requested page of the User's applications.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
-    public Page<AdoptionApplicationInfoDto> getUserApplications(String authServerId, int pageNumber) throws
+    public Page<AdoptionApplicationInfoDto> getUserApplications(String userAuthServerId, int pageNumber) throws
             ResponseStatusException
     {
         Page<AdoptionApplication> adoptionApplications = this.adoptionsRepository
-                .findAllByUserAuthServerId(authServerId, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
+                .findAllByUserAuthServerId(userAuthServerId, PageRequest.of(pageNumber, ADOPTIONS_PAGE_SIZE));
     
         if (adoptionApplications.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested page does not exist");
@@ -89,13 +89,13 @@ public class AdoptionsService
     /**
      * Posts an adoption application for a Pet.
      *
-     * @param authServerId               External applicant's ID.
+     * @param userAuthServerId           External applicant's ID.
      * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
      */
-    public void postApplication(String authServerId, PostAdoptionApplicationDto postAdoptionApplicationDto) throws
+    public void postApplication(String userAuthServerId, PostAdoptionApplicationDto postAdoptionApplicationDto) throws
             ResponseStatusException
     {
-        Optional<User> optionalUser = this.usersRepository.findByAuthServerId(authServerId);
+        Optional<User> optionalUser = this.usersRepository.findByAuthServerId(userAuthServerId);
         if (optionalUser.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         
@@ -132,30 +132,30 @@ public class AdoptionsService
     /**
      * Retrieves a User's AdoptionApplication, given its primary numerical key.
      *
-     * @param authServerId  External ID of the User who posted the application.
-     * @param applicationId ID of the application to retrieve.
+     * @param userAuthServerId External ID of the User who posted the application.
+     * @param applicationId    ID of the application to retrieve.
      * @return The requested application.
      * @throws ResponseStatusException If the requested AdoptionApplication does not exist (404 Not Found) or it wasn't
      *                                 posted by the specified User (403 Forbidden).
      */
-    public AdoptionApplicationDto getApplicationById(String authServerId, long applicationId) throws
+    public AdoptionApplicationDto getApplicationById(String userAuthServerId, long applicationId) throws
             ResponseStatusException
     {
-        AdoptionApplication adoptionApplication = getApplicationPostedBy(authServerId, applicationId);
+        AdoptionApplication adoptionApplication = getApplicationPostedBy(userAuthServerId, applicationId);
         return new AdoptionApplicationDto(adoptionApplication);
     }
     
     /**
      * Deletes the specified application for a Pet.
      *
-     * @param email Email of the User who posted the application.
-     * @param id    ID of the application to delete.
+     * @param userAuthServerId External ID of the User who posted the application.
+     * @param applicationId    ID of the application to delete.
      * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
      *                                 not the specified User (403 Forbidden).
      */
-    public void deleteApplicationById(String email, long id) throws ResponseStatusException
+    public void deleteApplicationById(String userAuthServerId, long applicationId) throws ResponseStatusException
     {
-        AdoptionApplication adoptionApplication = getApplicationPostedBy(email, id);
+        AdoptionApplication adoptionApplication = getApplicationPostedBy(userAuthServerId, applicationId);
         this.adoptionsRepository.delete(adoptionApplication);
     }
     
@@ -184,20 +184,20 @@ public class AdoptionsService
     /**
      * Retrieves an AdoptionApplication and checks if it was posted by the specified User.
      *
-     * @param authServerId External ID of the applicant.
+     * @param userAuthServerId External ID of the applicant.
      * @param applicationId    ID of the application to retrieve.
      * @return The specified application.
      * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
      *                                 not the specified User (403 Forbidden).
      */
-    private AdoptionApplication getApplicationPostedBy(String authServerId, long applicationId) throws
+    private AdoptionApplication getApplicationPostedBy(String userAuthServerId, long applicationId) throws
             ResponseStatusException
     {
         Optional<AdoptionApplication> optionalAdoptionApplication = this.adoptionsRepository.findById(applicationId);
         if (optionalAdoptionApplication.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         AdoptionApplication adoptionApplication = optionalAdoptionApplication.get();
-    
-        if (!adoptionApplication.getUser().getAuthServerId().equals(authServerId))
+        
+        if (!adoptionApplication.getUser().getAuthServerId().equals(userAuthServerId))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         return adoptionApplication;
     }

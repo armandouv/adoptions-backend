@@ -82,7 +82,7 @@ public class AdoptionsController
      * Retrieves a User's AdoptionApplication, given its primary numerical key.
      *
      * @param principal Currently authenticated User.
-     * @param id    ID of the application to retrieve.
+     * @param id        ID of the application to retrieve.
      * @return The requested application.
      * @throws ResponseStatusException If the requested AdoptionApplication does not exist (404 Not Found) or it wasn't
      *                                 posted by the authenticated User (403 Forbidden).
@@ -97,16 +97,16 @@ public class AdoptionsController
     /**
      * Withdraws the specified application for a Pet.
      *
-     * @param email Email of the currently authenticated User.
-     * @param id    ID of the application to withdraw.
+     * @param principal Currently authenticated User.
+     * @param id        ID of the application to withdraw.
      * @throws ResponseStatusException If the specified application does not exist (404 Not Found) or the applicant is
      *                                 not the authenticated User (403 Forbidden).
      */
     @DeleteMapping("{id}")
-    public void withdrawApplicationById(@AuthenticationPrincipal String email, @PathVariable long id) throws
+    public void withdrawApplicationById(@AuthenticationPrincipal Jwt principal, @PathVariable long id) throws
             ResponseStatusException
     {
-        this.adoptionsService.deleteApplicationById(email, id);
+        this.adoptionsService.deleteApplicationById(principal.getSubject(), id);
     }
     
     /**
