@@ -102,6 +102,7 @@ public class AdoptionsService
         Optional<Pet> optionalPet = this.petsRepository.findById(postAdoptionApplicationDto.getPetId());
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         
+        // TODO: Add answers to QuestionnaireResponses
         QuestionnaireResponses questionnaireResponses = postAdoptionApplicationDto.getQuestionnaireResponses();
         questionnaireResponses = this.questionnaireResponsesRepository.save(questionnaireResponses);
         

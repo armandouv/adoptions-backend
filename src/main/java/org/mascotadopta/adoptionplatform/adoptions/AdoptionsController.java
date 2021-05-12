@@ -6,7 +6,6 @@ import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationStatus
 import org.mascotadopta.adoptionplatform.adoptions.dto.PostAdoptionApplicationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -69,14 +68,14 @@ public class AdoptionsController
     /**
      * Posts an adoption application for a Pet.
      *
-     * @param oidcUser                   Applicant
+     * @param jwt                        Applicant
      * @param postAdoptionApplicationDto Information needed to apply for the adoption of a Pet.
      */
     @PostMapping
-    public void postApplication(@AuthenticationPrincipal OidcUser oidcUser,
+    public void postApplication(@AuthenticationPrincipal Jwt jwt,
                                 @Valid @RequestBody PostAdoptionApplicationDto postAdoptionApplicationDto)
     {
-        this.adoptionsService.postApplication(oidcUser.getSubject(), postAdoptionApplicationDto);
+        this.adoptionsService.postApplication(jwt.getSubject(), postAdoptionApplicationDto);
     }
     
     /**
