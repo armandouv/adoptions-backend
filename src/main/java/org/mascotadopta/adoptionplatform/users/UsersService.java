@@ -43,13 +43,13 @@ public class UsersService
     /**
      * Updates the settings of a User.
      *
-     * @param email             The email address of the User whose settings will be updated.
+     * @param authServerId      External ID of the User whose settings will be updated.
      * @param updateSettingsDto New settings.
      * @throws ResponseStatusException If the User does not exist (404 Not Found).
      */
-    public void updateSettings(String email, UpdateSettingsDto updateSettingsDto) throws ResponseStatusException
+    public void updateSettings(String authServerId, UpdateSettingsDto updateSettingsDto) throws ResponseStatusException
     {
-        Optional<User> userOptional = this.usersRepository.findByEmail(email);
+        Optional<User> userOptional = this.usersRepository.findByAuthServerId(authServerId);
         if (userOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         User user = userOptional.get();
     

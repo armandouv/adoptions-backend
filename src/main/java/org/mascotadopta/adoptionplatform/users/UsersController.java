@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionplatform.users;
 
 import org.mascotadopta.adoptionplatform.users.settings.dto.UpdateSettingsDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,13 +35,13 @@ public class UsersController
     /**
      * Updates the settings of a User.
      *
-     * @param email             Email address of the currently authenticated User.
+     * @param principal         Currently authenticated User.
      * @param updateSettingsDto New settings.
      */
     @PutMapping("settings")
-    public void updateSettings(@AuthenticationPrincipal String email,
+    public void updateSettings(@AuthenticationPrincipal Jwt principal,
                                @Valid @RequestBody UpdateSettingsDto updateSettingsDto)
     {
-        this.usersService.updateSettings(email, updateSettingsDto);
+        this.usersService.updateSettings(principal.getSubject(), updateSettingsDto);
     }
 }
