@@ -121,16 +121,16 @@ public class PetsController
     /**
      * Edits a Pet given its primary numerical key. The Pet must've been posted by the currently authenticated User.
      *
-     * @param email      Email of the currently authenticated User.
+     * @param principal  Currently authenticated User.
      * @param postPetDto New information of the Pet.
      * @param id         ID of the Pet to edit.
      * @throws ResponseStatusException If the Pet does not exist (404 Not Found).
      */
     @PutMapping("{id}")
-    public void editPet(@AuthenticationPrincipal String email, @Valid @RequestBody PostPetDto postPetDto,
+    public void editPet(@AuthenticationPrincipal Jwt principal, @Valid @RequestBody PostPetDto postPetDto,
                         @PathVariable long id) throws ResponseStatusException
     {
-        this.petsService.editPet(email, postPetDto, id);
+        this.petsService.editPet(principal.getSubject(), postPetDto, id);
     }
     
     /**

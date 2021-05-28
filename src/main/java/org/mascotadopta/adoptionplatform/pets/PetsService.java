@@ -159,15 +159,15 @@ public class PetsService
      * Edits a Pet given its primary numerical key. The Pet must've been posted by the User associated with
      * <code>email</code>.
      *
-     * @param email      Email of the User who posted the Pet.
-     * @param postPetDto New information of the Pet.
-     * @param id         ID of the Pet to edit.
+     * @param authServerId External ID of the User who posted the Pet.
+     * @param postPetDto   New information of the Pet.
+     * @param id           ID of the Pet to edit.
      * @throws ResponseStatusException If the Pet does not exist (404 Not Found) or it wasn't posted by the specified
      *                                 User (403 Forbidden).
      */
-    public void editPet(String email, PostPetDto postPetDto, long id) throws ResponseStatusException
+    public void editPet(String authServerId, PostPetDto postPetDto, long id) throws ResponseStatusException
     {
-        Pet pet = getPetPostedBy(email, id);
+        Pet pet = getPetPostedBy(authServerId, id);
         pet.updateFromDto(postPetDto);
         this.petsRepository.save(pet);
     }
