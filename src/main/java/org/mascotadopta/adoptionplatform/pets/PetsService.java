@@ -175,20 +175,20 @@ public class PetsService
     /**
      * Toggles the saved state in a Pet post.
      *
-     * @param email Email of the User to modify the state from.
-     * @param id    Pet ID.
+     * @param authServerId External ID of the User to modify the state from.
+     * @param id           Pet ID.
      * @return The new saved state of the specified Pet.
      */
-    public boolean togglePetSavedState(String email, @PathVariable long id)
+    public boolean togglePetSavedState(String authServerId, @PathVariable long id)
     {
         Optional<Pet> optionalPet = this.petsRepository.findById(id);
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Pet pet = optionalPet.get();
-        
-        Optional<User> optionalUser = this.usersRepository.findByEmail(email);
+    
+        Optional<User> optionalUser = this.usersRepository.findByAuthServerId(authServerId);
         if (optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         User user = optionalUser.get();
-        
+    
         Set<Pet> savedPets = user.getSavedPets();
         boolean saved = savedPets.contains(pet);
         

@@ -136,13 +136,13 @@ public class PetsController
     /**
      * Toggles the saved state in a Pet post.
      *
-     * @param email Email of the currently authenticated User.
-     * @param id    Pet ID.
+     * @param principal Currently authenticated User.
+     * @param id        Pet ID.
      * @return The new saved state of the specified Pet.
      */
     @PatchMapping("{id}")
-    public boolean togglePetSavedState(@AuthenticationPrincipal String email, @PathVariable long id)
+    public boolean togglePetSavedState(@AuthenticationPrincipal Jwt principal, @PathVariable long id)
     {
-        return this.petsService.togglePetSavedState(email, id);
+        return this.petsService.togglePetSavedState(principal.getSubject(), id);
     }
 }
