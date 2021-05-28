@@ -94,16 +94,16 @@ public class PetsController
      * Retrieves the requested page of a User's saved pet posts. Only a limited view of the data is returned
      * (<code>PetInfoDto</code>).
      *
-     * @param email      Email of the currently authenticated User.
+     * @param principal  Currently authenticated User.
      * @param pageNumber Page number to retrieve.
      * @return The requested Page of the User's saved pet posts.
      * @throws ResponseStatusException If the requested page does not exist (404 Not Found).
      */
     @GetMapping("saved")
-    public Page<PetInfoDto> getSavedPets(@AuthenticationPrincipal String email,
+    public Page<PetInfoDto> getSavedPets(@AuthenticationPrincipal Jwt principal,
                                          @RequestParam("page") int pageNumber) throws ResponseStatusException
     {
-        return this.petsService.getSavedPets(email, pageNumber);
+        return this.petsService.getSavedPets(principal.getSubject(), pageNumber);
     }
     
     /**
