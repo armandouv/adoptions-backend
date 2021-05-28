@@ -106,14 +106,14 @@ public class PetsService
     /**
      * Deletes a Pet given its primary numerical key. The Pet must have been posted by the specified User.
      *
-     * @param email Email of the poster.
-     * @param id    ID of the Pet to delete.
+     * @param authServerId External ID of the poster.
+     * @param id           ID of the Pet to delete.
      * @throws ResponseStatusException If the Pet to delete does not exist (404 Not Found) or it wasn't posted by the
      *                                 specified User (403 Forbidden).
      */
-    public void deletePetById(String email, long id) throws ResponseStatusException
+    public void deletePetById(String authServerId, long id) throws ResponseStatusException
     {
-        Pet pet = getPetPostedBy(email, id);
+        Pet pet = getPetPostedBy(authServerId, id);
         this.petsRepository.delete(pet);
     }
     
@@ -201,19 +201,20 @@ public class PetsService
     /**
      * Retrieves a Pet and checks if it was posted by the specified User.
      *
-     * @param email Email of the poster.
-     * @param id    ID of the Pet to retrieve.
+     * @param authServerId External ID of the poster.
+     * @param id           ID of the Pet to retrieve.
      * @return The specified Pet.
      * @throws ResponseStatusException If the Pet does not exist (404 Not Found) or it wasn't posted by the specified
      *                                 User (403 Forbidden).
      */
-    private Pet getPetPostedBy(String email, long id) throws ResponseStatusException
+    private Pet getPetPostedBy(String authServerId, long id) throws ResponseStatusException
     {
         Optional<Pet> optionalPet = this.petsRepository.findById(id);
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Pet pet = optionalPet.get();
         
-        if (!pet.getPostedBy().getEmail().equals(email)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        if (!pet.getPostedBy().getAuthServerId().equals(authServerId))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         
         return pet;
     }

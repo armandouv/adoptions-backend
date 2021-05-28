@@ -78,16 +78,16 @@ public class PetsController
     /**
      * Deletes a Pet given its primary numerical key. The Pet must've been posted by the currently authenticated User.
      *
-     * @param email Email of the currently authenticated User.
-     * @param id    ID of the Pet to delete.
+     * @param principal Currently authenticated User.
+     * @param id        ID of the Pet to delete.
      * @throws ResponseStatusException If the Pet to delete does not exist (404 Not Found) or it wasn't posted by the
      *                                 currently authenticated User (403 Forbidden).
      */
     @DeleteMapping("{id}")
-    public void deletePetById(@AuthenticationPrincipal String email, @PathVariable long id) throws
+    public void deletePetById(@AuthenticationPrincipal Jwt principal, @PathVariable long id) throws
             ResponseStatusException
     {
-        this.petsService.deletePetById(email, id);
+        this.petsService.deletePetById(principal.getSubject(), id);
     }
     
     /**
