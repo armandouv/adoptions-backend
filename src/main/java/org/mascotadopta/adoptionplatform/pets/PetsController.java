@@ -109,13 +109,13 @@ public class PetsController
     /**
      * Posts a Pet for adoption
      *
-     * @param email      Email of the currently authenticated User (the poster).
+     * @param principal  Currently authenticated User (the poster).
      * @param postPetDto Information of the Pet being posted.
      */
     @PostMapping
-    public void postPet(@AuthenticationPrincipal String email, @Valid @RequestBody PostPetDto postPetDto)
+    public void postPet(@AuthenticationPrincipal Jwt principal, @Valid @RequestBody PostPetDto postPetDto)
     {
-        this.petsService.postPet(email, postPetDto);
+        this.petsService.postPet(principal.getSubject(), postPetDto);
     }
     
     /**

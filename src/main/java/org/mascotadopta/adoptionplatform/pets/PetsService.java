@@ -140,13 +140,13 @@ public class PetsService
     /**
      * Posts a Pet for adoption
      *
-     * @param email      Email of the poster.
-     * @param postPetDto Information of the Pet being posted.
+     * @param authServerId External ID of the poster.
+     * @param postPetDto   Information of the Pet being posted.
      * @throws ResponseStatusException If the User does not exist (404 Not Found).
      */
-    public void postPet(String email, PostPetDto postPetDto) throws ResponseStatusException
+    public void postPet(String authServerId, PostPetDto postPetDto) throws ResponseStatusException
     {
-        Optional<User> optionalUser = this.usersRepository.findByEmail(email);
+        Optional<User> optionalUser = this.usersRepository.findByAuthServerId(authServerId);
         
         if (optionalUser.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
