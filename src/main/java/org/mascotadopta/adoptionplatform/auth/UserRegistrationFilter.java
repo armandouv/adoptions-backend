@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionplatform.auth;
 
 import org.jetbrains.annotations.NotNull;
 import org.mascotadopta.adoptionplatform.users.UsersService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,14 @@ public class UserRegistrationFilter extends OncePerRequestFilter
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
                                     @NotNull FilterChain filterChain) throws ServletException, IOException
     {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null)
+        {
+            filterChain.doFilter(request, response);
+            return;
+        }
+    
+        Object principal = authentication.getPrincipal();
         if (principal instanceof Jwt) usersService.processUserRegistration((Jwt) principal);
         filterChain.doFilter(request, response);
     }
