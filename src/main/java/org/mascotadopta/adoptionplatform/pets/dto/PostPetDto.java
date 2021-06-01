@@ -3,10 +3,7 @@ package org.mascotadopta.adoptionplatform.pets.dto;
 import lombok.Data;
 import org.mascotadopta.adoptionplatform.pets.PetType;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 /**
  * Necessary data to post a Pet.
@@ -17,15 +14,16 @@ public class PostPetDto
     @NotNull
     private PetType type;
     
+    @Size(max = 50)
     @NotBlank
-    @Size(min = 2, message = "Pet name must be at least two characters long.")
     private String name;
     
+    @Size(min = 10, max = 100)
     @NotBlank
-    @Size(min = 30, message = "Pet description must be at least 30 characters long.")
     private String description;
     
-    @NotNull
+    @Max(99999)
     @Positive
-    private int zipCode;
+    @NotNull
+    private Integer zipCode;
 }

@@ -61,7 +61,7 @@ public class Pet
      * Whether this Pet posting is still available for adoption or not.
      */
     @NotNull
-    private Boolean isActive = true;
+    private Boolean active = true;
     
     /**
      * The name of this Pet.

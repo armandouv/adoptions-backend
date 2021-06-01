@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionplatform.pets.dto;
 
 import lombok.Value;
 import org.mascotadopta.adoptionplatform.pets.Pet;
+import org.mascotadopta.adoptionplatform.pets.PetType;
 
 import java.time.LocalDateTime;
 
@@ -11,17 +12,17 @@ import java.time.LocalDateTime;
 @Value
 public class PetInfoDto
 {
-    long id;
+    Long id;
     
     LocalDateTime createdDate;
     
-    String type;
+    PetType type;
     
-    boolean isActive;
+    Boolean active;
     
     String name;
     
-    int zipCode;
+    Integer zipCode;
     
     String imageUrl = "";
     
@@ -37,7 +38,7 @@ public class PetInfoDto
         this.id = pet.getId();
         this.createdDate = pet.getCreatedDate();
         this.type = pet.getType();
-        this.isActive = pet.isActive();
+        this.active = pet.getActive();
         this.name = pet.getName();
         this.zipCode = pet.getZipCode();
     }

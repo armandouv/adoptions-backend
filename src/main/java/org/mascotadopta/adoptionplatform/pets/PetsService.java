@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Pets-related business logic.
@@ -189,12 +189,13 @@ public class PetsService
         if (optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         User user = optionalUser.get();
     
-        Set<Pet> savedPets = user.getSavedPets();
+        // TODO: Refactor into custom query.
+        List<Pet> savedPets = user.getSavedPets();
         boolean saved = savedPets.contains(pet);
-        
+    
         if (saved) savedPets.remove(pet);
         else savedPets.add(pet);
-        
+    
         return !saved;
     }
     
