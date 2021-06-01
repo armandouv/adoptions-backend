@@ -10,10 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +28,8 @@ public class Pet
      */
     @Id
     @GeneratedValue
-    private long id;
+    @NotNull
+    private Long id;
     
     /**
      * Date of Pet creation.
@@ -56,28 +54,27 @@ public class Pet
     /**
      * Animal type of this Pet, e.g. a dog, cat, etc.
      */
-    @NotBlank
-    @Size(min = 2, message = "Pet type must be at least two characters long.")
-    private String type;
+    @NotNull
+    private PetType type;
     
     /**
      * Whether this Pet posting is still available for adoption or not.
      */
     @NotNull
-    private boolean isActive = true;
+    private Boolean isActive = true;
     
     /**
      * The name of this Pet.
      */
     @NotBlank
-    @Size(min = 2, message = "Pet name must be at least two characters long.")
+    @Size(max = 50)
     private String name;
     
     /**
      * Relevant information about this Pet.
      */
     @NotBlank
-    @Size(min = 30, message = "Pet description must be at least 30 characters long.")
+    @Size(min = 10, max = 100)
     private String description;
     
     /**
@@ -89,8 +86,9 @@ public class Pet
     /**
      * The zip code of the place where this Pet is being posted or offered.
      */
-    @NotNull
+    @Max(99999)
     @Positive
+    @NotNull
     private Integer zipCode;
     
     /**

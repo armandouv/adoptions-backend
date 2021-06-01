@@ -12,9 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A registered user.
@@ -64,10 +62,16 @@ public class User
     private List<AdoptionApplication> adoptionApplications;
     
     /**
+     * Pets this User posted for adoption.
+     */
+    @OneToMany(mappedBy = "postedBy")
+    private List<Pet> postedPets;
+    
+    /**
      * Saved Pet posts.
      */
-    @ManyToMany
-    private Set<Pet> savedPets = new HashSet<>();
+    @ManyToMany(mappedBy = "savedBy")
+    private List<Pet> savedPets;
     
     /**
      * Constructs a <code>User</code> with the information provided.

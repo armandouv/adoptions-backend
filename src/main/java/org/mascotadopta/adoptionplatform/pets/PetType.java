@@ -6,5 +6,6 @@ public enum PetType
     CAT,
     FISH,
     BIRD,
-    HAMSTER
+    HAMSTER,
+    OTHER
 }
