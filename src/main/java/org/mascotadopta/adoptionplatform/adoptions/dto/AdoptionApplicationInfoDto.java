@@ -15,7 +15,7 @@ public class AdoptionApplicationInfoDto
 {
     AdoptionApplicationStatus status;
     
-    long id;
+    Long id;
     
     LocalDateTime createdDate;
     

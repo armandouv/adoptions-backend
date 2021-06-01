@@ -4,6 +4,7 @@ import lombok.Data;
 import org.mascotadopta.adoptionplatform.adoptions.QuestionnaireResponses;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * Necessary data to post an AdoptionApplication.
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PostAdoptionApplicationDto
 {
+    @Positive
     @NotNull
     private Long petId;
     
