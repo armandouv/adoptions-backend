@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -30,7 +31,6 @@ public class Pet
      */
     @Id
     @GeneratedValue
-    @NotNull
     private long id;
     
     /**
@@ -56,8 +56,8 @@ public class Pet
     /**
      * Animal type of this Pet, e.g. a dog, cat, etc.
      */
-    @NotNull
-    @Size(min = 1, message = "Pet type must be at least one character long.")
+    @NotBlank
+    @Size(min = 2, message = "Pet type must be at least two characters long.")
     private String type;
     
     /**
@@ -69,14 +69,14 @@ public class Pet
     /**
      * The name of this Pet.
      */
-    @NotNull
+    @NotBlank
     @Size(min = 2, message = "Pet name must be at least two characters long.")
     private String name;
     
     /**
      * Relevant information about this Pet.
      */
-    @NotNull
+    @NotBlank
     @Size(min = 30, message = "Pet description must be at least 30 characters long.")
     private String description;
     

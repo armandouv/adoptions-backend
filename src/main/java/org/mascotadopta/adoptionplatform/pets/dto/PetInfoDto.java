@@ -23,6 +23,10 @@ public class PetInfoDto
     
     int zipCode;
     
+    String imageUrl = "";
+    
+    String imageAlt = "";
+    
     /**
      * Single constructor. Fills the required data given a <code>Pet</code>.
      *
