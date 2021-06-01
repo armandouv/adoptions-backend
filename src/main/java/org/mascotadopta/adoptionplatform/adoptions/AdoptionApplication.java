@@ -23,6 +23,7 @@ public class AdoptionApplication
     /**
      * The status of this application.
      */
+    @NotNull
     private AdoptionApplicationStatus status = AdoptionApplicationStatus.IN_PROGRESS;
     
     /**
@@ -31,7 +32,7 @@ public class AdoptionApplication
     @Id
     @GeneratedValue
     @NotNull
-    private long id;
+    private Long id;
     
     /**
      * Date of application creation.
@@ -50,7 +51,7 @@ public class AdoptionApplication
     /**
      * Pet for which this application is.
      */
-    @OneToOne
+    @ManyToOne
     @NotNull
     private Pet pet;
     

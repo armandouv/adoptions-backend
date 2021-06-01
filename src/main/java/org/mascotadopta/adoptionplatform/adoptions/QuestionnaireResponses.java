@@ -26,4 +26,5 @@ public class QuestionnaireResponses
     @GeneratedValue
     @NotNull
     private long id;
+    // TODO: Add questions.
 }

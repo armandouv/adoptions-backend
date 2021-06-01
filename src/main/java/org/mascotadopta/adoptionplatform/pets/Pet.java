@@ -83,7 +83,7 @@ public class Pet
     /**
      * Application processes for this Pet.
      */
-    @OneToMany
+    @OneToMany(mappedBy = "pet")
     private List<AdoptionApplication> applications;
     
     /**
