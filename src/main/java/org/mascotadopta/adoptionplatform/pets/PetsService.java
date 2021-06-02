@@ -189,7 +189,7 @@ public class PetsService
         if (optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         User user = optionalUser.get();
     
-        // TODO: Refactor into custom query.
+        // TODO: Test and if does not work refactor into custom query.
         List<Pet> savedPets = user.getSavedPets();
         boolean saved = savedPets.contains(pet);
     
