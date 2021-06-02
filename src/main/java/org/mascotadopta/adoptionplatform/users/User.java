@@ -45,7 +45,7 @@ public class User
     private String authServerId;
     
     @Column(unique = true)
-    @NotNull
+    @NotBlank
     private String email;
     
     /**

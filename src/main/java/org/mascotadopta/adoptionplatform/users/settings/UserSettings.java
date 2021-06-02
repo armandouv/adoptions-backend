@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "UserSettings")
 public class UserSettings
 {
+    // TODO: Delete NotNull in primary keys.
     /**
      * Primary numerical key.
      */
@@ -29,19 +30,19 @@ public class UserSettings
      * Whether the User should receive an email notification when another User applies to their adoption post or not.
      */
     @NotNull
-    private boolean notifyNewApplicants = true;
+    private Boolean notifyNewApplicants = true;
     
     /**
      * Whether the User should receive an email notification when their application is accepted or not.
      */
     @NotNull
-    private boolean notifyAcceptedApplications = true;
+    private Boolean notifyAcceptedApplications = true;
     
     /**
      * Whether the User should receive an email notification when their application is rejected or not.
      */
     @NotNull
-    private boolean notifyRejectedApplications = true;
+    private Boolean notifyRejectedApplications = true;
     
     /**
      * Updates this settings given a DTO.
@@ -50,8 +51,8 @@ public class UserSettings
      */
     public void updateFromDto(UpdateSettingsDto updateSettingsDto)
     {
-        this.notifyNewApplicants = updateSettingsDto.isNotifyNewApplicants();
-        this.notifyAcceptedApplications = updateSettingsDto.isNotifyAcceptedApplications();
-        this.notifyRejectedApplications = updateSettingsDto.isNotifyRejectedApplications();
+        this.notifyNewApplicants = updateSettingsDto.getNotifyNewApplicants();
+        this.notifyAcceptedApplications = updateSettingsDto.getNotifyAcceptedApplications();
+        this.notifyRejectedApplications = updateSettingsDto.getNotifyRejectedApplications();
     }
 }

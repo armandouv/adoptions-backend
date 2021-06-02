@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 public class UpdateSettingsDto
 {
     @NotNull
-    private boolean notifyNewApplicants;
+    private Boolean notifyNewApplicants;
     
     @NotNull
-    private boolean notifyAcceptedApplications;
+    private Boolean notifyAcceptedApplications;
     
     @NotNull
-    private boolean notifyRejectedApplications;
+    private Boolean notifyRejectedApplications;
 }
