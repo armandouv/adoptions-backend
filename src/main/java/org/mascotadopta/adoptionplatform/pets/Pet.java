@@ -28,7 +28,6 @@ public class Pet
      */
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
     
     /**

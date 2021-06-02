@@ -17,13 +17,11 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "UserSettings")
 public class UserSettings
 {
-    // TODO: Delete NotNull in primary keys.
     /**
      * Primary numerical key.
      */
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
     
     /**

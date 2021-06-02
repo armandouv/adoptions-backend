@@ -31,7 +31,6 @@ public class AdoptionApplication
      */
     @Id
     @GeneratedValue
-    @NotNull
     private Long id;
     
     /**
