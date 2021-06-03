@@ -3,8 +3,8 @@ package org.mascotadopta.adoptionplatform.adoptions;
 import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationDto;
 import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.mascotadopta.adoptionplatform.adoptions.dto.PostAdoptionApplicationDto;
-import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
-import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponsesRepository;
+import org.mascotadopta.adoptionplatform.adoptions.survey.Survey;
+import org.mascotadopta.adoptionplatform.adoptions.survey.SurveysRepository;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 import org.mascotadopta.adoptionplatform.pets.PetsRepository;
 import org.mascotadopta.adoptionplatform.users.User;
@@ -44,27 +44,27 @@ public class AdoptionsService
     private final PetsRepository petsRepository;
     
     /**
-     * QuestionnaireResponses repository.
+     * Survey repository.
      */
-    private final QuestionnaireResponsesRepository questionnaireResponsesRepository;
+    private final SurveysRepository surveysRepository;
     
     /**
      * Single constructor.
      *
-     * @param adoptionsRepository              Adoptions repository.
-     * @param usersRepository                  Users repository.
-     * @param petsRepository                   Pets repository.
-     * @param questionnaireResponsesRepository QuestionnaireResponses repository.
+     * @param adoptionsRepository Adoptions repository.
+     * @param usersRepository     Users repository.
+     * @param petsRepository      Pets repository.
+     * @param surveysRepository   Surveys repository.
      */
     public AdoptionsService(AdoptionsRepository adoptionsRepository,
                             UsersRepository usersRepository,
                             PetsRepository petsRepository,
-                            QuestionnaireResponsesRepository questionnaireResponsesRepository)
+                            SurveysRepository surveysRepository)
     {
         this.adoptionsRepository = adoptionsRepository;
         this.usersRepository = usersRepository;
         this.petsRepository = petsRepository;
-        this.questionnaireResponsesRepository = questionnaireResponsesRepository;
+        this.surveysRepository = surveysRepository;
     }
     
     /**
@@ -100,16 +100,16 @@ public class AdoptionsService
         Optional<User> optionalUser = this.usersRepository.findByAuthServerId(userAuthServerId);
         if (optionalUser.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
+    
         Optional<Pet> optionalPet = this.petsRepository.findById(postAdoptionApplicationDto.getPetId());
         if (optionalPet.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        
-        // TODO: Add answers to QuestionnaireResponses
-        QuestionnaireResponses questionnaireResponses = postAdoptionApplicationDto.getQuestionnaireResponses();
-        questionnaireResponses = this.questionnaireResponsesRepository.save(questionnaireResponses);
-        
+    
+        // TODO: Add answers to Survey
+        Survey survey = postAdoptionApplicationDto.getSurvey();
+        survey = this.surveysRepository.save(survey);
+    
         AdoptionApplication adoptionApplication = new AdoptionApplication(optionalUser.get(), optionalPet.get(),
-                questionnaireResponses);
+                survey);
         this.adoptionsRepository.save(adoptionApplication);
     }
     

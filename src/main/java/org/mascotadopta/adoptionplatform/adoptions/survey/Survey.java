@@ -1,4 +1,4 @@
-package org.mascotadopta.adoptionplatform.adoptions.questionnaire;
+package org.mascotadopta.adoptionplatform.adoptions.survey;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * Responses to the questionnaire required in the adoption application process.
+ * Responses to the survey required in the adoption application process.
  */
 @Data
 @NoArgsConstructor
 @Entity(name = "QuestionnaireResponses")
 @EntityListeners(AuditingEntityListener.class)
-public class QuestionnaireResponses
+public class Survey
 {
     /**
      * Primary numerical key.

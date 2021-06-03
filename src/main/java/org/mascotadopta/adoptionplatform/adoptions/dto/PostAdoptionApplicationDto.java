@@ -1,7 +1,7 @@
 package org.mascotadopta.adoptionplatform.adoptions.dto;
 
 import lombok.Data;
-import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
+import org.mascotadopta.adoptionplatform.adoptions.survey.Survey;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -17,5 +17,5 @@ public class PostAdoptionApplicationDto
     private Long petId;
     
     @NotNull
-    private QuestionnaireResponses questionnaireResponses;
+    private Survey survey;
 }

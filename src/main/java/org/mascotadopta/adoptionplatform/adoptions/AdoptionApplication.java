@@ -2,7 +2,7 @@ package org.mascotadopta.adoptionplatform.adoptions;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
+import org.mascotadopta.adoptionplatform.adoptions.survey.Survey;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 import org.mascotadopta.adoptionplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
@@ -56,23 +56,23 @@ public class AdoptionApplication
     private Pet pet;
     
     /**
-     * Responses to the questionnaire required in the application process.
+     * Responses to the survey required in the application process.
      */
     @OneToOne(fetch = FetchType.LAZY)
     @NotNull
-    private QuestionnaireResponses questionnaireResponses;
+    private Survey survey;
     
     /**
      * Constructs an AdoptionApplication given the related entities.
      *
-     * @param user                   User who posted this application.
-     * @param pet                    Pet for which this application is.
-     * @param questionnaireResponses Responses to the questionnaire required in the application process.
+     * @param user   User who posted this application.
+     * @param pet    Pet for which this application is.
+     * @param survey Responses to the survey required in the application process.
      */
-    public AdoptionApplication(User user, Pet pet, QuestionnaireResponses questionnaireResponses)
+    public AdoptionApplication(User user, Pet pet, Survey survey)
     {
         this.user = user;
         this.pet = pet;
-        this.questionnaireResponses = questionnaireResponses;
+        this.survey = survey;
     }
 }

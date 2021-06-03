@@ -3,7 +3,7 @@ package org.mascotadopta.adoptionplatform.adoptions.dto;
 import lombok.Value;
 import org.mascotadopta.adoptionplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionplatform.adoptions.AdoptionApplicationStatus;
-import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
+import org.mascotadopta.adoptionplatform.adoptions.survey.Survey;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Value
 public class AdoptionApplicationDto
 {
-    QuestionnaireResponses questionnaireResponses;
+    Survey survey;
     
     AdoptionApplicationStatus status;
     
@@ -35,6 +35,6 @@ public class AdoptionApplicationDto
         this.id = adoptionApplication.getId();
         this.createdDate = adoptionApplication.getCreatedDate();
         this.pet = adoptionApplication.getPet();
-        this.questionnaireResponses = adoptionApplication.getQuestionnaireResponses();
+        this.survey = adoptionApplication.getSurvey();
     }
 }
