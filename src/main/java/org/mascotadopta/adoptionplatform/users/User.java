@@ -23,7 +23,7 @@ public class User
     /**
      * Settings associated with this User.
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private UserSettings settings;
     
     /**

@@ -43,21 +43,21 @@ public class AdoptionApplication
     /**
      * User who applied for a Pet's adoption.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private User user;
     
     /**
      * Pet for which this application is.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private Pet pet;
     
     /**
      * Responses to the questionnaire required in the application process.
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @NotNull
     private QuestionnaireResponses questionnaireResponses;
     

@@ -40,7 +40,7 @@ public class Pet
     /**
      * User who posted this Pet for adoption.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private User postedBy;
     
