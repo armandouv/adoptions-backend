@@ -3,7 +3,6 @@ package org.mascotadopta.adoptionplatform.pets;
 import com.google.common.base.MoreObjects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mascotadopta.adoptionplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionplatform.pets.dto.PostPetDto;
 import org.mascotadopta.adoptionplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;
@@ -75,12 +74,6 @@ public class Pet
     @NotBlank
     @Size(min = 10, max = 100)
     private String description;
-    
-    /**
-     * Application processes for this Pet.
-     */
-    @OneToMany(mappedBy = "pet")
-    private List<AdoptionApplication> applications;
     
     /**
      * The zip code of the place where this Pet is being posted or offered.
