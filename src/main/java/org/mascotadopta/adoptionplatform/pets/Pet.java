@@ -11,7 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A pet for adoption.
@@ -47,7 +48,7 @@ public class Pet
      * Users who saved this Pet posting.
      */
     @ManyToMany
-    private List<User> savedBy;
+    private Set<User> savedBy = new HashSet<>();
     
     /**
      * Animal type of this Pet, e.g. a dog, cat, etc.
@@ -82,6 +83,21 @@ public class Pet
     @Positive
     @NotNull
     private Integer zipCode;
+    
+    public void deleteSavedByUser(User user)
+    {
+        this.savedBy.remove(user);
+    }
+    
+    public void addSavedByUser(User user)
+    {
+        this.savedBy.add(user);
+    }
+    
+    public boolean didUserSave(User user)
+    {
+        return this.savedBy.contains(user);
+    }
     
     /**
      * Constructs a Pet given a DTO and the User who posted it.

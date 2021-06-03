@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -189,12 +188,10 @@ public class PetsService
         if (optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         User user = optionalUser.get();
     
-        // TODO: Test and if does not work refactor into custom query.
-        List<Pet> savedPets = user.getSavedPets();
-        boolean saved = savedPets.contains(pet);
+        boolean saved = pet.didUserSave(user);
     
-        if (saved) savedPets.remove(pet);
-        else savedPets.add(pet);
+        if (saved) pet.deleteSavedByUser(user);
+        else pet.addSavedByUser(user);
     
         return !saved;
     }
