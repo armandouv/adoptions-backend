@@ -3,6 +3,8 @@ package org.mascotadopta.adoptionplatform.adoptions;
 import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationDto;
 import org.mascotadopta.adoptionplatform.adoptions.dto.AdoptionApplicationInfoDto;
 import org.mascotadopta.adoptionplatform.adoptions.dto.PostAdoptionApplicationDto;
+import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
+import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponsesRepository;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 import org.mascotadopta.adoptionplatform.pets.PetsRepository;
 import org.mascotadopta.adoptionplatform.users.User;

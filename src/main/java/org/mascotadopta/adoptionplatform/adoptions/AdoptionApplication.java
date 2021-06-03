@@ -2,6 +2,7 @@ package org.mascotadopta.adoptionplatform.adoptions;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 import org.mascotadopta.adoptionplatform.users.User;
 import org.springframework.data.annotation.CreatedDate;

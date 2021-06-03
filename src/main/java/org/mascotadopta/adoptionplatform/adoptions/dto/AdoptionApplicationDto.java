@@ -3,7 +3,7 @@ package org.mascotadopta.adoptionplatform.adoptions.dto;
 import lombok.Value;
 import org.mascotadopta.adoptionplatform.adoptions.AdoptionApplication;
 import org.mascotadopta.adoptionplatform.adoptions.AdoptionApplicationStatus;
-import org.mascotadopta.adoptionplatform.adoptions.QuestionnaireResponses;
+import org.mascotadopta.adoptionplatform.adoptions.questionnaire.QuestionnaireResponses;
 import org.mascotadopta.adoptionplatform.pets.Pet;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package org.mascotadopta.adoptionplatform.adoptions;
+package org.mascotadopta.adoptionplatform.adoptions.questionnaire;
 
 import org.springframework.data.repository.CrudRepository;
 

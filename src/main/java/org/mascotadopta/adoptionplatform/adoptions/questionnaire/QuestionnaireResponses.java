@@ -1,4 +1,4 @@
-package org.mascotadopta.adoptionplatform.adoptions;
+package org.mascotadopta.adoptionplatform.adoptions.questionnaire;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
